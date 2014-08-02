@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/supersmooth/back-end/issues"
   },
-  "homepage": "https://github.com/supersmooth/back-end"
+  "homepage": "https://github.com/supersmooth/back-end",
+  "dependencies": {
+    "express": "^4.7.2"
+  }
 }
