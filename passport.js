@@ -1,5 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy
 var User = require('./models/user')
+var validator = require('validator')
 
 module.exports = function (passport) {
 
@@ -21,12 +22,14 @@ module.exports = function (passport) {
     function (req, username, password, done) {
         process.nextTick(function() {
             
+            if (!validator.isLength(username, 6, 20)) return done(null, false, req.flash('signupMessage', 'username must be between 6 and 20 characters'))
+            if (!validator.isLength(password, 6, 100)) return done(null, false, req.flash('signupMessage', 'password must be between 6 and 20 characters'))
+            
             User.findOne({ 'username' : username }, function (err, user) {
-                if (err) console.log(err + '!!!!!!!!!')
+                if (err) console.log(err)
                 if (user) return done(null, false, req.flash('signupMessage', 'That username is taken.'))
 
                 else {
-                    console.log('new account created') //dev
                     var newUser = new User()
                     newUser.username = username
                     newUser.password = newUser.generateHash(password)
@@ -46,7 +49,6 @@ module.exports = function (passport) {
         passReqToCallback : true
     },
     function(req, username, password, done) {
-        console.log(username + ' ' + password)
         User.findOne({ 'username' :  username }, function(err, user) {
             if (err) return done(err);
             if (!user) return done(null, false, req.flash('loginMessage', 'that username does not exist!'))

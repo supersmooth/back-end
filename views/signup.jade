@@ -1,5 +1,14 @@
 doctype html
 html
     body
-        h1 signup 
-        h2 #{message}
+        
+        extends menu
+        block append content
+        
+            h1 signup 
+            h2 #{message}
+            
+            form(action="/signup", method="post")
+                input(type="text", name="username", placeholder="username")
+                input(type="password", name="password", placeholder="password")
+                input(type="submit", value="register")

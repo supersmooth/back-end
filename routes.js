@@ -5,7 +5,7 @@ module.exports = function(app, passport) {
     app.get('/', function (req, res) {
         //req.session.save()
         console.log(req.session.cookie)
-        res.render('index.jade', {something: 'someeeeffjjfjjyhhhhingggggg'})
+        res.render('index.jade', {something: req.flash('signoutMessage')})
     })
     
     app.get('/signup', function(req, res) {
@@ -38,7 +38,11 @@ module.exports = function(app, passport) {
     })
     
     app.get('/signout', function(req, res) {
-        req.logout()
+        
+        if(req.user){
+            req.logout()
+            req.flash('signoutMessage', 'you have signed out')
+        }
         res.redirect('/')
     })
     

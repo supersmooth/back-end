@@ -1,5 +1,9 @@
 doctype html
 html
     body
-        h1 welcome! 
-        h2 #{username}
+    
+        extends menu
+        block append content
+        
+            h1 welcome! 
+            h2 #{username}
