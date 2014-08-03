@@ -1,5 +1,7 @@
 var express = require('express')
 , app = express()
+, http = require('http').Server(app)
+, io = require('socket.io')(http)
 , morgan = require('morgan')
 , cookieParser = require('cookie-parser')
 , mongoose = require('mongoose')
@@ -32,7 +34,12 @@ app.use(flash())
 // routes
 require("./routes.js")(app, passport)
 
-//launch and confirm
-app.listen(app.get('port'), function(){
-    console.log('server running on port: ' + app.get('port'));
-})
+// socket.io
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+http.listen(app.get('port'), function(){
+  console.log('listening on ' + app.get('port'));
+});
+

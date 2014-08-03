@@ -24,9 +24,11 @@
     "express": "^4.7.2",
     "express-session": "^1.7.2",
     "jade": "^1.5.0",
+    "json3": "^3.3.2",
     "mongoose": "^3.8.14",
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
+    "socket.io": "^1.0.6",
     "validator": "^3.16.1"
   },
   "devDependencies": {

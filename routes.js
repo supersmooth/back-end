@@ -29,9 +29,11 @@ module.exports = function(app, passport) {
     
     app.get('/u/:username', findUsername, function(req, res) {
         
-        if (req.user) {
-            res.render('profile.jade', {data: {isUser: true, comments: req.user.comments}})
-        }                 //username : req.user.username, comments : req.user.comments, isUser : true
+        // if user in session is the same as :username
+        if (req.user && req.user.username === req.params.username) {
+                res.render('profile.jade', {data: {isUser: true, comments: req.user.comments}})
+        }
+        // if :username exists in database
         else if (req.params.user) {
             res.render('profile.jade', {data : {isUser: false, comments: req.params.user.comments}})
         }
@@ -63,9 +65,9 @@ module.exports = function(app, passport) {
         res.redirect('/profile')
     })
     
-    app.get('*', function (req, res) {
-        res.status(404).render('404.jade')
-    })
+    //app.get('*', function (req, res) {
+    //    res.status(404).render('404.jade')
+    //})
 }
 
 function isLoggedIn(req, res, next) {
