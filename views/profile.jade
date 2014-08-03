@@ -12,8 +12,10 @@ html
             
             if data.isUser 
                 form(action="/comment", method="post")
-                input(type="text", name="title", placeholder="title")
-                br
-                textarea(name="password", placeholder="type here...")
-                br
-                input(type="submit", value="submit")
+                    br
+                    textarea(name="content", placeholder="type here...")
+                    br
+                    input(type="submit", value="comment")
+                    
+            each comment in data.comments
+                p= comment

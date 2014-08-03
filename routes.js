@@ -29,11 +29,11 @@ module.exports = function(app, passport) {
     
     app.get('/u/:username', findUsername, function(req, res) {
         
-        if (req.user === req.params.username) {
-            res.render('profile.jade', {data: {isUser: true}})
+        if (req.user) {
+            res.render('profile.jade', {data: {isUser: true, comments: req.user.comments}})
         }                 //username : req.user.username, comments : req.user.comments, isUser : true
         else if (req.params.user) {
-            res.render('profile.jade', {data : {isUser: false}})
+            res.render('profile.jade', {data : {isUser: false, comments: req.params.user.comments}})
         }
         else {
             req.flash('errorMessage', 'that profile page does not exist')
@@ -56,7 +56,12 @@ module.exports = function(app, passport) {
     
     ///////////////////////////////////////////////////
     
-    app.post('/comment')
+    app.post('/comment', isLoggedIn, function (req, res) {
+        req.user.comments.push(req.body.content)
+        req.user.save()
+        
+        res.redirect('/profile')
+    })
     
     app.get('*', function (req, res) {
         res.status(404).render('404.jade')
