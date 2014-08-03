@@ -6,4 +6,14 @@ html
         block append content
         
             h1 welcome! 
-            h2 #{username}
+            //h2 #{username}
+            
+            h3 posts:
+            
+            if data.isUser 
+                form(action="/comment", method="post")
+                input(type="text", name="title", placeholder="title")
+                br
+                textarea(name="password", placeholder="type here...")
+                br
+                input(type="submit", value="submit")

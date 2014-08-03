@@ -3,9 +3,8 @@ var User = require('./models/user')
 module.exports = function(app, passport) {
 
     app.get('/', function (req, res) {
-        //req.session.save()
         console.log(req.session.cookie)
-        res.render('index.jade', {something: req.flash('signoutMessage')})
+        res.render('index.jade', {something: req.flash('errorMessage')})
     })
     
     app.get('/signup', function(req, res) {
@@ -28,26 +27,39 @@ module.exports = function(app, passport) {
         failureFlash: true
     }))
     
-    app.get('/u/:username', function(req, res) {
-        res.render('profile.jade')
+    app.get('/u/:username', findUsername, function(req, res) {
+        
+        if (req.user === req.params.username) {
+            res.render('profile.jade', {data: {isUser: true}})
+        }                 //username : req.user.username, comments : req.user.comments, isUser : true
+        else if (req.params.user) {
+            res.render('profile.jade', {data : {isUser: false}})
+        }
+        else {
+            req.flash('errorMessage', 'that profile page does not exist')
+            res.redirect('/')
+        }
     })
     
-    //temp // should send to /u/:username
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.jade', {username : req.user.username})
+         res.redirect('/u/' + req.user.username)
     })
     
     app.get('/signout', function(req, res) {
         
         if(req.user){
             req.logout()
-            req.flash('signoutMessage', 'you have signed out')
+            req.flash('errorMessage', 'you have signed out')
         }
         res.redirect('/')
     })
     
+    ///////////////////////////////////////////////////
+    
+    app.post('/comment')
+    
     app.get('*', function (req, res) {
-        res.status(404).send('<h1>page not found</h1')
+        res.status(404).render('404.jade')
     })
 }
 
@@ -57,4 +69,11 @@ function isLoggedIn(req, res, next) {
         req.flash('loginMessage', 'you need to be logged in for that')
         res.redirect('/login')
     }
+}
+
+function findUsername(req, res, next) {
+    User.findOne({ 'username' : req.params.username }, function (err, user) {
+        if (user) req.params.user = user
+        next()
+    })
 }
