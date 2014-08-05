@@ -66,6 +66,7 @@ module.exports = function(app, passport, io) {
             date: Date.now(),
             author: req.user.username,
             likes: 1,
+            body: req.body.content
         })
         req.user.comments.push(newComment)
         req.user.save()

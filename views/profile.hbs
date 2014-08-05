@@ -8,7 +8,9 @@
         <button type="submit">Submit</button>
     </form>
 {{/if}}
-
+<hr>
 {{#each data.comments}}
-<p>{{this}}</p>
+<h3>{{this.author}}</h3>
+<p>{{this.body}}</p>
+<hr>
 {{/each}}
