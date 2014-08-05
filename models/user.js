@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
 var bcrypt   = require('bcrypt-nodejs')
+var Comment  = require('./comment')
 
 // user schema
 var userSchema = mongoose.Schema({
@@ -7,7 +8,7 @@ var userSchema = mongoose.Schema({
     username: String,
     password: String, 
     
-    comments   : [String]
+    comments   : [Comment.schema]
 })
 
 // user methods
