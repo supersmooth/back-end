@@ -10,6 +10,27 @@
 {{/if}}
 <hr>
 {{#each data.threads}}
-<p>{{this.body}}</p>
+<div>{{this.body}}
+<br>
+[{{this.likes}} like]
+<p class="_id">{{this._id}}</p>
+{{#each this.comments}}
+    <p class="nested">
+        {{this.body}}
+        <br>
+        by: {{this.author}}
+        [{{this.likes}} like]
+    </p>
+{{/each}}
+</div>
 <hr>
 {{/each}}
+
+<style>
+    ._id{
+        display:none;
+    }
+    .nested{
+        margin-left:50px;
+    }
+</style>

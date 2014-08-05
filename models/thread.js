@@ -9,7 +9,7 @@ var threadSchema = mongoose.Schema({
     author   : { type: Schema.ObjectId, ref: 'User' },
     likes    : Number,
 
-    comments : [{ type: Schema.ObjectId, ref: 'Comment' }]
+    comments : [Comment.schema]
 })
 
 // exports

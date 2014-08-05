@@ -1,5 +1,6 @@
 var User = require('./models/user')
 var Thread  = require('./models/thread')
+var Comment  = require('./models/comment')
 
 module.exports = function(app, passport, io) {
 
@@ -66,7 +67,7 @@ module.exports = function(app, passport, io) {
             date: Date.now(),
             author: req.user._id,
             likes: 1,
-            body: req.body.content
+            body: req.body.body.content
         })
         newThread.save(function (err, thread) {
             if (err) console.log(err)
@@ -74,6 +75,22 @@ module.exports = function(app, passport, io) {
             req.user.save(function (err) {
                 if (err) console.log(err)
             })
+        })
+        res.redirect('/profile')
+    })
+    
+    app.post('/u/:username/:thread', isLoggedIn, findUsername, findThread, function (req, res) {
+        
+        var newComment = new Comment.model({
+            body: req.body.body,
+            author: req.user,
+            date: Date.now(),
+            likes: 1
+        })
+        
+        req.TRHEAD.comments.push(newComment)
+        req.THREAD.save(function (err) {
+            if (err) console.log(err)
         })
         res.redirect('/profile')
     })
@@ -98,4 +115,12 @@ function findUsername(req, res, next) {
     }).populate('threads').exec(function (err, thread) {
         if (err) console.log(err)
     })
+}
+
+function findThread(req, res, next) {
+    Thread.findById(req.params.thread, function (err, thread) {
+        if(err) console.log(err)
+        req.THREAD = thread
+    })
+    next()
 }

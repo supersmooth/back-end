@@ -7,6 +7,8 @@ var commentSchema = mongoose.Schema({
     date     : Date,
     author   : { type: Schema.ObjectId, ref: 'User' },
     likes    : Number,
+    
+    respondsTo: {type: Schema.ObjectId, ref: 'User' },
 
     replies : [{ type: Schema.ObjectId, ref: 'Comment' }]
 })
