@@ -1,14 +1,16 @@
 var User = require('./models/user')
 
-module.exports = function(app, passport) {
+module.exports = function(app, passport, io) {
 
     app.get('/', function (req, res) {
         console.log(req.session.cookie)
         res.render('index.jade', {something: req.flash('errorMessage')})
+        
     })
     
     app.get('/signup', function(req, res) {
         res.render('signup.jade', {message: req.flash('signupMessage')})
+        
     })
     
     app.post('/signup', passport.authenticate('local-signup', {
@@ -65,9 +67,9 @@ module.exports = function(app, passport) {
         res.redirect('/profile')
     })
     
-    //app.get('*', function (req, res) {
-    //    res.status(404).render('404.jade')
-    //})
+    app.get('*', function (req, res) {
+        res.status(404).render('404.jade')
+    })
 }
 
 function isLoggedIn(req, res, next) {

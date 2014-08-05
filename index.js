@@ -24,7 +24,9 @@ app.set('port', process.env.PORT || 1000)
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.engine('jade', require('jade').__express)
+
+app.engine('jade', require('jade').__express) 
+//app.engine('html', require('hbs').__express);
 
 app.use(session({ secret: 'session-secret-stuff', saveUninitialized: true, resave: true }))
 app.use(passport.initialize())
@@ -32,14 +34,12 @@ app.use(passport.session())
 app.use(flash())
 
 // routes
-require("./routes.js")(app, passport)
+require('./routes.js')(app, passport, io)
 
 // socket.io
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
+require('./sockets.js')(io)
 
+// start up
 http.listen(app.get('port'), function(){
   console.log('listening on ' + app.get('port'));
 });
-
