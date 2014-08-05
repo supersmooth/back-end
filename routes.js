@@ -1,4 +1,5 @@
 var User = require('./models/user')
+var Comment  = require('./models/comment')
 
 module.exports = function(app, passport, io) {
 
@@ -61,9 +62,13 @@ module.exports = function(app, passport, io) {
     ///////////////////////////////////////////////////
     
     app.post('/comment', isLoggedIn, function (req, res) {
-        req.user.comments.push(req.body.content)
+        var newComment = new Comment.model({
+            date: Date.now(),
+            author: req.user.username,
+            likes: 1,
+        })
+        req.user.comments.push(newComment)
         req.user.save()
-        
         res.redirect('/profile')
     })
     
