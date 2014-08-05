@@ -1,16 +1,16 @@
 var mongoose = require('mongoose')
+var Comment  = require('./comment')
 var Schema = mongoose.Schema
 
 // comment schema
-var commentSchema = mongoose.Schema({
+var threadSchema = mongoose.Schema({
     body     : String,
     date     : Date,
     author   : { type: Schema.ObjectId, ref: 'User' },
     likes    : Number,
 
-    replies : [{ type: Schema.ObjectId, ref: 'Comment' }]
+    comments : [{ type: Schema.ObjectId, ref: 'Comment' }]
 })
 
 // exports
-module.exports.model = mongoose.model('Comment', commentSchema)
-module.exports.schema = commentSchema
+module.exports = mongoose.model('Thread', threadSchema)

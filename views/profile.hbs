@@ -1,7 +1,7 @@
 <h1>Welcome</h1>
 <h3> Posts:</h3>
 {{#if data.isUser}}
-    <form action="/comment" method="post">
+    <form action="/thread" method="post">
         <br>
         <textarea name="content" cols="30" rows="10" placeholder="Enter Comment..."></textarea>
         <br>
@@ -9,8 +9,7 @@
     </form>
 {{/if}}
 <hr>
-{{#each data.comments}}
-<h3>{{this.author}}</h3>
+{{#each data.threads}}
 <p>{{this.body}}</p>
 <hr>
 {{/each}}

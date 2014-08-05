@@ -1,6 +1,8 @@
 var mongoose = require('mongoose')
 var bcrypt   = require('bcrypt-nodejs')
 var Comment  = require('./comment')
+var Thread  = require('./thread')
+var Schema = mongoose.Schema
 
 // user schema
 var userSchema = mongoose.Schema({
@@ -8,7 +10,8 @@ var userSchema = mongoose.Schema({
     username: String,
     password: String, 
     
-    comments   : [Comment.schema]
+    comments   : [Comment.schema],
+    threads    : [{ type: Schema.Types.ObjectId, ref: 'Thread' }]
 })
 
 // user methods

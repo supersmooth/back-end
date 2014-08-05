@@ -1,5 +1,5 @@
 var User = require('./models/user')
-var Comment  = require('./models/comment')
+var Thread  = require('./models/thread')
 
 module.exports = function(app, passport, io) {
 
@@ -34,45 +34,50 @@ module.exports = function(app, passport, io) {
         
         // if user in session is the same as :username
         if (req.user && req.user.username === req.params.username) {
-                res.render('profile', {data: {isUser: true, comments: req.user.comments}, layout : 'layouts/main'})
+                res.render('profile', {data: {isUser: true, threads: req.params.user.threads}, layout : 'layouts/main'})
         }
         // if :username exists in database
         else if (req.params.user) {
-            res.render('profile', {data : {isUser: false, comments: req.params.user.comments}, layout : 'layouts/main'})
+            res.render('profile', {data : {isUser: false, threads: req.params.user.threads}, layout : 'layouts/main'})
         }
         else {
             req.flash('errorMessage', 'that profile page does not exist')
             res.redirect('/')
         }
     })
-    
+
     app.get('/profile', isLoggedIn, function(req, res) {
          res.redirect('/u/' + req.user.username)
     })
-    
+
     app.get('/signout', function(req, res) {
-        
+
         if(req.user){
             req.logout()
             req.flash('errorMessage', 'you have signed out')
         }
         res.redirect('/')
     })
-    
+
     ///////////////////////////////////////////////////
-    
-    app.post('/comment', isLoggedIn, function (req, res) {
-        var newComment = new Comment.model({
+
+    app.post('/thread', isLoggedIn, function (req, res) {
+        var newThread = new Thread({
             date: Date.now(),
-            author: req.user.username,
+            author: req.user._id,
             likes: 1,
             body: req.body.content
         })
-        req.user.comments.push(newComment)
-        req.user.save()
+        newThread.save(function (err, thread) {
+            if (err) console.log(err)
+            req.user.threads.push(thread._id)
+            req.user.save(function (err) {
+                if (err) console.log(err)
+            })
+        })
         res.redirect('/profile')
     })
-    
+
     app.get('*', function (req, res) {
         res.status(404).render('404')
     })
@@ -90,5 +95,7 @@ function findUsername(req, res, next) {
     User.findOne({ 'username' : req.params.username }, function (err, user) {
         if (user) req.params.user = user
         next()
+    }).populate('threads').exec(function (err, thread) {
+        if (err) console.log(err)
     })
 }
