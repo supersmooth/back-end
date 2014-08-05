@@ -4,12 +4,12 @@ module.exports = function(app, passport, io) {
 
     app.get('/', function (req, res) {
         console.log(req.session.cookie)
-        res.render('index.jade', {something: req.flash('errorMessage')})
+        res.render('index', {something: req.flash('errorMessage'), layout : 'layouts/main'})
         
     })
     
     app.get('/signup', function(req, res) {
-        res.render('signup.jade', {message: req.flash('signupMessage')})
+        res.render('signup', {message: req.flash('signupMessage'), layout : 'layouts/main'})
         
     })
     
@@ -20,7 +20,7 @@ module.exports = function(app, passport, io) {
     }))
     
     app.get('/login', function(req, res) {
-        res.render('login.jade', {message: req.flash('loginMessage')})
+        res.render('login', {message: req.flash('loginMessage'), layout : 'layouts/main'})
     })
     
     app.post('/login', passport.authenticate('local-login', {
@@ -33,11 +33,11 @@ module.exports = function(app, passport, io) {
         
         // if user in session is the same as :username
         if (req.user && req.user.username === req.params.username) {
-                res.render('profile.jade', {data: {isUser: true, comments: req.user.comments}})
+                res.render('profile', {data: {isUser: true, comments: req.user.comments}, layout : 'layouts/main'})
         }
         // if :username exists in database
         else if (req.params.user) {
-            res.render('profile.jade', {data : {isUser: false, comments: req.params.user.comments}})
+            res.render('profile', {data : {isUser: false, comments: req.params.user.comments}, layout : 'layouts/main'})
         }
         else {
             req.flash('errorMessage', 'that profile page does not exist')
@@ -68,7 +68,7 @@ module.exports = function(app, passport, io) {
     })
     
     app.get('*', function (req, res) {
-        res.status(404).render('404.jade')
+        res.status(404).render('404')
     })
 }
 

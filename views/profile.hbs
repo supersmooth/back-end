@@ -1,0 +1,14 @@
+<h1>Welcome</h1>
+<h3> Posts:</h3>
+{{#if data.isUser}}
+    <form action="/comment" method="post">
+        <br>
+        <textarea name="content" cols="30" rows="10" placeholder="Enter Comment..."></textarea>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+{{/if}}
+
+{{#each data.comments}}
+<p>{{this}}</p>
+{{/each}}

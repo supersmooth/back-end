@@ -9,6 +9,7 @@ var express = require('express')
 , passport = require('passport')
 , session = require('express-session')
 , flash = require('connect-flash')
+, hbs = require('hbs')
 
 // db
 mongoose.connect('mongodb://testing:testing@ds053419.mongolab.com:53419/supersmooth', function(err) {
@@ -20,13 +21,14 @@ require('./passport')(passport)
 
 // express config
 app.use(morgan('dev'))
-app.set('port', process.env.PORT || 1000)
+app.set('port', process.env.PORT || 5000)
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.engine('jade', require('jade').__express) 
-//app.engine('html', require('hbs').__express);
+//app.engine('jade', require('jade').__express) 
+app.set('view engine', 'hbs')
+hbs.registerPartials(__dirname + '/views/partials')
 
 app.use(session({ secret: 'session-secret-stuff', saveUninitialized: true, resave: true }))
 app.use(passport.initialize())
