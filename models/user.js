@@ -31,7 +31,7 @@ function findByUsername(req, res, next){
     .populate('threads', null, null, {limit:20})
     .exec(function(err, user) {
         if(err) console.log(err)
-        req.params.user = user
+        req.USER = user
         next()
     })
 }

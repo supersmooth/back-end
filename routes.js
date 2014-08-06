@@ -32,12 +32,12 @@ module.exports = function(app, passport){
     // user page
     app.get('/u/:username', function(req, res){
         
-        if((req.user) && (req.user.username === req.params.username)){
-            console.log(req.params.user.threads)
-            res.render('profile', {data: {isUser: true, threads: req.params.user.threads}, layout : 'layouts/main'})
+        if((req.user) && (req.user.username === req.USER.username)){
+            console.log(req.USER.threads)
+            res.render('profile', {data: {isUser: true, threads: req.USER.threads}, layout : 'layouts/main'})
         }
-        else if (req.params.user){
-            res.render('profile', {data : {isUser: false, threads: req.params.user.threads}, layout : 'layouts/main'})
+        else if (req.USER){
+            res.render('profile', {data : {isUser: false, threads: req.USER.threads}, layout : 'layouts/main'})
         }
         else{
             req.flash('errorMessage', 'that profile page does not exist')
@@ -75,7 +75,7 @@ module.exports = function(app, passport){
     })
 
     // handles comment creation
-    app.post('/u/:username/:thread', authUtils.isLoggedIn, Comment.create, function(req, res){
+    app.post('/thread/:thread', authUtils.isLoggedIn, Comment.create, function(req, res){
         res.redirect('/profile')
     })
 
