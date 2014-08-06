@@ -5,17 +5,17 @@ var async = require('async')
 var authUtils = require('./authentication/utils')
 
 module.exports = function(app, passport){
-    
+
     // landing page
     app.get('/', function (req, res){
         res.render('index', {something: req.flash('errorMessage'), layout : 'layouts/main'})
     })
-    
+
     // signup page
     app.get('/signup', function(req, res){
         res.render('signup', {message: req.flash('signupMessage'), layout : 'layouts/main'})
     })
-    
+
     // login page
     app.get('/login', function(req, res){
         res.render('login', {message: req.flash('loginMessage'), layout : 'layouts/main'})
@@ -74,7 +74,7 @@ module.exports = function(app, passport){
     app.post('/u/:username/:thread', authUtils.isLoggedIn, User.findByUsername, Thread.find, Comment.create, function(req, res){
         res.redirect('/profile')
     })
-    
+
     // 404 page
     app.get('*', function (req, res) {
         res.status(404).render('404')

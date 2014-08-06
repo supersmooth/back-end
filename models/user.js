@@ -20,16 +20,20 @@ userSchema.methods.generateHash = function(password) {
 }
 userSchema.methods.isValidPassword = function(password) {
     return bcrypt.compareSync(password, this.password)
-} 
+}
 
 var userModel = mongoose.model('User', userSchema)
 
 // middleware
-function findByUsername(req, res, next) {
-    userModel.findOne({ 'username' : req.params.username }, function (err, user) {
-        if(user) req.params.user = user
+function findByUsername(req, res, next){
+    userModel
+    .findOne({ 'username': req.params.username})
+    .populate('threads', null, null, {limit:20})
+    .exec(function(err, user) {
+        if(err) console.log(err)
+        req.params.user = user
         next()
-    }).populate('threads',null,null,{limit:20})
+    })
 }
 
 // exports
