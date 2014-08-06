@@ -17,7 +17,7 @@ mongoose.connect('mongodb://testing:testing@ds053419.mongolab.com:53419/supersmo
     else console.log('connected to db')
 })
 
-require('./passport')(passport)
+require('./authentication/passport')(passport)
 
 // express config
 app.use(morgan('dev'))

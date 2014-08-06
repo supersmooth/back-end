@@ -2,6 +2,7 @@ var User = require('./models/user')
 var Thread  = require('./models/thread')
 var Comment  = require('./models/comment')
 var async = require('async')
+var authUtils = require('./authentication/utils')
 
 module.exports = function(app, passport){
     
@@ -21,12 +22,12 @@ module.exports = function(app, passport){
     })
     
     // redirects to req.user(users in session) page
-    app.get('/profile', isLoggedIn, function(req, res){
+    app.get('/profile', authUtils.isLoggedIn, function(req, res){
          res.redirect('/u/' + req.user.username)
     })
 
     // user page
-    app.get('/u/:username', findUsername, function(req, res){
+    app.get('/u/:username', User.findByUsername, function(req, res){
         
         if((req.user) && (req.user.username === req.params.username)){
                 res.render('profile', {data: {isUser: true, threads: req.params.user.threads}, layout : 'layouts/main'})
@@ -56,7 +57,7 @@ module.exports = function(app, passport){
         failureRedirect: '/signup',
         failureFlash: true
     }))
-    
+
     // login form
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/profile',
@@ -65,50 +66,16 @@ module.exports = function(app, passport){
     }))
 
     // handles thread creation
-    app.post('/thread', isLoggedIn, Thread.create, function (req, res){
+    app.post('/thread', authUtils.isLoggedIn, Thread.create, function (req, res){
         res.redirect('/profile')
     })
-    
-    app.post('/u/:username/:thread', isLoggedIn, findUsername, findThread, Comment.create, function(req, res){
+
+    app.post('/u/:username/:thread', authUtils.isLoggedIn, User.findByUsername, Thread.find, Comment.create, function(req, res){
         res.redirect('/profile')
     })
     
     // 404 page
     app.get('*', function (req, res) {
         res.status(404).render('404')
-    })
-}
-
-// middleware
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) return next()
-    else {
-        req.flash('loginMessage', 'you need to be logged in for that')
-        res.redirect('/login')
-    }
-}
-
-// middleware
-function findUsername(req, res, next) {
-    User.findOne({ 'username' : req.params.username }, function (err, user) {
-        if (user) req.params.user = user
-        next()
-    }).populate('threads').exec(function (err, thread) {
-        if (err) console.log(err)
-    })
-}
-
-// middleware
-function findThread(req, res, next) {
-    Thread.model.findById(req.params.thread, function (err, thread) {
-        if(err) console.log(err)
-        if(thread) {
-            req.THREAD = thread
-            next()
-        }
-        else {
-            req.flash('errorMessage', 'that thread page does not exist')
-            res.redirect('/')
-        }
     })
 }

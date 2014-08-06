@@ -34,6 +34,22 @@ function createThread(req, res, next) {
     })
 }
 
+// Thread find middleware
+function findThread(req, res, next) {
+    threadModel.findById(req.params.thread, function (err, thread) {
+        if(err) console.log(err)
+        if(thread) {
+            req.THREAD = thread
+            next()
+        }
+        else {
+            req.flash('errorMessage', 'that thread page does not exist')
+            res.redirect('/')
+        }
+    })
+}
+
 // exports
 module.exports.model = threadModel
 module.exports.create = createThread
+module.exports.find = findThread
