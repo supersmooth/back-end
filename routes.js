@@ -6,6 +6,9 @@ var authUtils = require('./authentication/utils')
 
 module.exports = function(app, passport){
 
+    app.param('thread', Thread.findById)
+    app.param('username', User.findByUsername)
+
     // landing page
     app.get('/', function (req, res){
         res.render('index', {something: req.flash('errorMessage'), layout : 'layouts/main'})
@@ -27,7 +30,7 @@ module.exports = function(app, passport){
     })
 
     // user page
-    app.get('/u/:username', User.findByUsername, function(req, res){
+    app.get('/u/:username', function(req, res){
         
         if((req.user) && (req.user.username === req.params.username)){
             console.log(req.params.user.threads)
@@ -71,7 +74,8 @@ module.exports = function(app, passport){
         res.redirect('/profile')
     })
 
-    app.post('/u/:username/:thread', authUtils.isLoggedIn, User.findByUsername, Thread.find, Comment.create, function(req, res){
+    // handles comment creation
+    app.post('/u/:username/:thread', authUtils.isLoggedIn, Comment.create, function(req, res){
         res.redirect('/profile')
     })
 

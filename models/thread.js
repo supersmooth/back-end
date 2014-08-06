@@ -33,7 +33,7 @@ function createThread(req, res, next) {
 }
 
 // Thread find middleware
-function findThread(req, res, next) {
+function findById(req, res, next) {
     threadModel
     .findById(req.params.thread)
     .exec(function(err, thread){
@@ -52,4 +52,4 @@ function findThread(req, res, next) {
 // exports
 module.exports.model = threadModel
 module.exports.create = createThread
-module.exports.find = findThread
+module.exports.findById = findById
