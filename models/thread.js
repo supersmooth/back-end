@@ -6,8 +6,7 @@ var Schema = mongoose.Schema
 var threadSchema = mongoose.Schema({
     body      : String,
     date      : Date,
-    author    : { type: Schema.ObjectId, ref: 'User' },
-    authorName: String,
+    author    : String,
     likes     : Number,
     comments  : [Comment.schema]
 })
@@ -19,8 +18,7 @@ var threadModel = mongoose.model('Thread', threadSchema)
 function createThread(req, res, next) {
     var newThread = new threadModel({
         date: Date.now(),
-        author: req.user._id,
-        authorName: req.user.username,
+        author: req.user.username,
         likes: 1,
         body: req.body.content
     })

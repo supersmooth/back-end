@@ -30,7 +30,8 @@ module.exports = function(app, passport){
     app.get('/u/:username', User.findByUsername, function(req, res){
         
         if((req.user) && (req.user.username === req.params.username)){
-                res.render('profile', {data: {isUser: true, threads: req.params.user.threads}, layout : 'layouts/main'})
+            console.log(req.params.user.threads)
+            res.render('profile', {data: {isUser: true, threads: req.params.user.threads}, layout : 'layouts/main'})
         }
         else if (req.params.user){
             res.render('profile', {data : {isUser: false, threads: req.params.user.threads}, layout : 'layouts/main'})
