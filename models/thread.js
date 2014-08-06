@@ -34,9 +34,11 @@ function createThread(req, res, next) {
 
 // Thread find middleware
 function findThread(req, res, next) {
-    threadModel.findById(req.params.thread, function (err, thread) {
+    threadModel
+    .findById(req.params.thread)
+    .exec(function(err, thread){
         if(err) console.log(err)
-        if(thread) {
+        if(thread){
             req.THREAD = thread
             next()
         }
