@@ -26,7 +26,6 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-//app.engine('jade', require('jade').__express) 
 app.set('view engine', 'hbs')
 hbs.registerPartials(__dirname + '/views/partials')
 
@@ -36,7 +35,7 @@ app.use(passport.session())
 app.use(flash())
 
 // routes
-require('./routes.js')(app, passport, io)
+require('./routes.js')(app, passport)
 
 // socket.io
 require('./sockets.js')(io)

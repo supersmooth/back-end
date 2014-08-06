@@ -1,57 +1,47 @@
 var User = require('./models/user')
 var Thread  = require('./models/thread')
 var Comment  = require('./models/comment')
+var async = require('async')
 
-module.exports = function(app, passport, io) {
-
-    app.get('/', function (req, res) {
-        console.log(req.session.cookie)
+module.exports = function(app, passport){
+    
+    // landing page
+    app.get('/', function (req, res){
         res.render('index', {something: req.flash('errorMessage'), layout : 'layouts/main'})
-        
     })
     
-    app.get('/signup', function(req, res) {
+    // signup page
+    app.get('/signup', function(req, res){
         res.render('signup', {message: req.flash('signupMessage'), layout : 'layouts/main'})
-        
     })
     
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/profile',
-        failureRedirect: '/signup',
-        failureFlash: true
-    }))
-    
-    app.get('/login', function(req, res) {
+    // login page
+    app.get('/login', function(req, res){
         res.render('login', {message: req.flash('loginMessage'), layout : 'layouts/main'})
     })
     
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/profile',
-        failureRedirect: '/login',
-        failureFlash: true
-    }))
-    
-    app.get('/u/:username', findUsername, function(req, res) {
+    // redirects to req.user(users in session) page
+    app.get('/profile', isLoggedIn, function(req, res){
+         res.redirect('/u/' + req.user.username)
+    })
+
+    // user page
+    app.get('/u/:username', findUsername, function(req, res){
         
-        // if user in session is the same as :username
-        if (req.user && req.user.username === req.params.username) {
+        if((req.user) && (req.user.username === req.params.username)){
                 res.render('profile', {data: {isUser: true, threads: req.params.user.threads}, layout : 'layouts/main'})
         }
-        // if :username exists in database
-        else if (req.params.user) {
+        else if (req.params.user){
             res.render('profile', {data : {isUser: false, threads: req.params.user.threads}, layout : 'layouts/main'})
         }
-        else {
+        else{
             req.flash('errorMessage', 'that profile page does not exist')
             res.redirect('/')
         }
     })
 
-    app.get('/profile', isLoggedIn, function(req, res) {
-         res.redirect('/u/' + req.user.username)
-    })
-
-    app.get('/signout', function(req, res) {
+    // singout page
+    app.get('/signout', function(req, res){
 
         if(req.user){
             req.logout()
@@ -60,46 +50,36 @@ module.exports = function(app, passport, io) {
         res.redirect('/')
     })
 
-    ///////////////////////////////////////////////////
+    // signup form
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect: '/profile',
+        failureRedirect: '/signup',
+        failureFlash: true
+    }))
+    
+    // login form
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect: '/profile',
+        failureRedirect: '/login',
+        failureFlash: true
+    }))
 
-    app.post('/thread', isLoggedIn, function (req, res) {
-        var newThread = new Thread({
-            date: Date.now(),
-            author: req.user._id,
-            likes: 1,
-            body: req.body.body.content
-        })
-        newThread.save(function (err, thread) {
-            if (err) console.log(err)
-            req.user.threads.push(thread._id)
-            req.user.save(function (err) {
-                if (err) console.log(err)
-            })
-        })
+    // handles thread creation
+    app.post('/thread', isLoggedIn, Thread.create, function (req, res){
         res.redirect('/profile')
     })
     
-    app.post('/u/:username/:thread', isLoggedIn, findUsername, findThread, function (req, res) {
-        
-        var newComment = new Comment.model({
-            body: req.body.body,
-            author: req.user,
-            date: Date.now(),
-            likes: 1
-        })
-        
-        req.TRHEAD.comments.push(newComment)
-        req.THREAD.save(function (err) {
-            if (err) console.log(err)
-        })
+    app.post('/u/:username/:thread', isLoggedIn, findUsername, findThread, Comment.create, function(req, res){
         res.redirect('/profile')
     })
-
+    
+    // 404 page
     app.get('*', function (req, res) {
         res.status(404).render('404')
     })
 }
 
+// middleware
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) return next()
     else {
@@ -108,6 +88,7 @@ function isLoggedIn(req, res, next) {
     }
 }
 
+// middleware
 function findUsername(req, res, next) {
     User.findOne({ 'username' : req.params.username }, function (err, user) {
         if (user) req.params.user = user
@@ -117,10 +98,17 @@ function findUsername(req, res, next) {
     })
 }
 
+// middleware
 function findThread(req, res, next) {
-    Thread.findById(req.params.thread, function (err, thread) {
+    Thread.model.findById(req.params.thread, function (err, thread) {
         if(err) console.log(err)
-        req.THREAD = thread
+        if(thread) {
+            req.THREAD = thread
+            next()
+        }
+        else {
+            req.flash('errorMessage', 'that thread page does not exist')
+            res.redirect('/')
+        }
     })
-    next()
 }
