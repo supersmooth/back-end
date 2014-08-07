@@ -74,10 +74,10 @@ module.exports = function(app, passport){
     })
 
     // 'like' thread
-    // should redirect to last page
     // thread.like should know if use has already liked this
     app.post('/thread/:thread/like', authUtils.isLoggedIn, Thread.like, function(req,res){
-        res.end('/profile')
+        backURL=req.header('Referer') || '/';
+        res.redirect(backURL)
     })
 
     // handles comment creation

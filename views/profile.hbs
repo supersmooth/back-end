@@ -3,7 +3,7 @@
 {{#if data.isUser}}
     <form action="/thread" method="post">
         <br>
-        <textarea name="content" cols="30" rows="10" placeholder="Enter Comment..."></textarea>
+        <textarea name="content" cols="30" rows="10" placeholder="Enter Thread..."></textarea>
         <br>
         <button type="submit">Submit</button>
     </form>
@@ -12,18 +12,23 @@
 {{#each data.threads}}
 <div>{{this.body}}
 <br>
-[{{this.likes}} like]
+[{{this.likes}} like] <form action="/thread/{{this._id}}/like" method="post"><button type="submit">like</button></form>
 <p class="_id">{{this._id}}</p>
 {{#each this.comments}}
     <p class="nested">
         {{this.body}}
         <br>
-        by: {{this.author}}
+        by: <a href="/u/{{this.author}}">{{this.author}}</a>
         [{{this.likes}} like]
         <p class="_id">{{this._id}}</p>
     </p>
 {{/each}}
 </div>
+    <form action="/thread/{{this._id}}" method="post">
+        <br>
+        <input name="body" cols="30" rows="1" placeholder="Enter Comment..."></textarea>
+        <button type="submit">submit comment</button>
+    </form>
 <hr>
 {{/each}}
 
@@ -35,3 +40,6 @@
         margin-left:50px;
     }
 </style>
+
+<script>
+</script>
