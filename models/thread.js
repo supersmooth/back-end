@@ -50,11 +50,18 @@ function findById(req, res, next) {
 }
 
 function likeThread(req, res, next){
-    req.THREAD.likes.push(req.user.username)
-    req.THREAD.save(function(err){
-        if(err) console.log(err)
+    if(req.THREAD.likes.indexOf(req.user.username) !== -1){
+        req.flash('errorMessage', 'You have already liked that Thread.')
         next()
-    })
+    } 
+    else {
+        console.log(req.THREAD.likes.indexOf(req.user.username))
+        req.THREAD.likes.push(req.user.username)
+        req.THREAD.save(function(err){
+            if(err) console.log(err)
+            next()
+        })
+    }
 }
 
 // exports
