@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var User = require('./user')
 var Schema = mongoose.Schema
 
 // Comment schema
@@ -15,6 +16,7 @@ var commentSchema = mongoose.Schema({
 // Comment model
 var commentModel = mongoose.model('Comment', commentSchema)
 
+// refactor this refactor this refactor this
 // Comment create
 function createComment(req, res, next){
     var newComment = new commentModel({
@@ -25,9 +27,24 @@ function createComment(req, res, next){
     })
     req.THREAD.comments.push(newComment)
     req.THREAD.save(function (err, comment){
-        console.log(comment)
         if(err) console.log(err)
-        next()
+        //
+        User.model
+        .findOne({ 'username': comment.author})
+        .exec(function(err, user){
+            if(err) console.log(err)
+            if(user) {
+                user.comments.push(comment)
+                user.save(function(err){
+                    if(err) console.log(err)
+                    next()
+                })
+            }
+            else {
+                req.flash('errorMessage', 'that profile page does not exist')
+                res.redirect('/')
+            }
+        })
     })
 }
 
