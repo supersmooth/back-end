@@ -11,17 +11,17 @@ module.exports = function(app, passport){
 
     // landing page
     app.get('/', function (req, res){
-        res.render('index', {something: req.flash('errorMessage'), layout : 'layouts/main'})
+        res.render('index', {message: req.flash('message'), layout : 'layouts/main'})
     })
 
     // signup page
     app.get('/signup', function(req, res){
-        res.render('signup', {message: req.flash('signupMessage'), layout : 'layouts/main'})
+        res.render('signup', {message: req.flash('message'), layout : 'layouts/main'})
     })
 
     // login page
     app.get('/login', function(req, res){
-        res.render('login', {message: req.flash('loginMessage'), layout : 'layouts/main'})
+        res.render('login', {message: req.flash('message'), layout : 'layouts/main'})
     })
     
     // redirects to req.user(users in session) page
@@ -31,37 +31,32 @@ module.exports = function(app, passport){
 
     // user page
     app.get('/u/:username', function(req, res){
-        console.log(req.flash)
+
         if((req.user) && (req.user.username === req.USER.username)){
-            res.render('profile', {data: {isUser: true, threads: req.USER.threads, flash: req.flash('errorMessage')}, layout : 'layouts/main'})
+            res.render('profile', {data: {isUser: true, threads: req.USER.threads, flash: req.flash('message')}, layout : 'layouts/main'})
         }
         else if (req.USER){
             res.render('profile', {data : {isUser: false, threads: req.USER.threads}, layout : 'layouts/main'})
         }
         else{
-            req.flash('errorMessage', 'that profile page does not exist')
+            req.flash('message', 'that profile page does not exist')
             res.redirect('/')
         }
     })
 
     // singout page
-    app.get('/signout', function(req, res){
-
-        if(req.user){
-            req.logout()
-            req.flash('errorMessage', 'you have signed out')
-        }
+    app.get('/signout', authUtils.logout, function(req, res){
         res.redirect('/')
     })
 
-    // signup form
+    // handles signup
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect: '/profile',
         failureRedirect: '/signup',
         failureFlash: true
     }))
 
-    // login form
+    // handles login
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/profile',
         failureRedirect: '/login',
@@ -74,7 +69,6 @@ module.exports = function(app, passport){
     })
 
     // 'like' thread
-    // thread.like should know if use has already liked this
     app.post('/thread/:thread/like', authUtils.isLoggedIn, Thread.like, function(req,res){
         backURL=req.header('Referer') || '/';
         res.redirect(backURL)
@@ -91,7 +85,7 @@ module.exports = function(app, passport){
     })
 
     // 404 page
-    app.get('*', function (req, res) {
+    app.all('*', function (req, res) {
         res.status(404).render('404')
     })
 }

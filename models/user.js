@@ -10,8 +10,8 @@ var userSchema = mongoose.Schema({
     username: String,
     password: String, 
     
-    comments   : [Comment.schema],
-    threads    : [{ type: Schema.Types.ObjectId, ref: 'Thread' }]
+    comments: [Comment.schema],
+    threads : [{ type: Schema.Types.ObjectId, ref: 'Thread' }]
 })
 
 // User schema methods
