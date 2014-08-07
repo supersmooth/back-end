@@ -11,17 +11,17 @@ module.exports = function(app, passport){
 
     // landing page
     app.get('/', function (req, res){
-        res.render('index', {message: req.flash('message'), layout : 'layouts/main'})
+        res.render('index', {message: req.flash('message')})
     })
 
     // signup page
     app.get('/signup', function(req, res){
-        res.render('signup', {message: req.flash('message'), layout : 'layouts/main'})
+        res.render('signup', {message: req.flash('message')})
     })
 
     // login page
     app.get('/login', function(req, res){
-        res.render('login', {message: req.flash('message'), layout : 'layouts/main'})
+        res.render('login', {message: req.flash('message')})
     })
     
     // redirects to req.user(users in session) page
@@ -38,14 +38,12 @@ module.exports = function(app, passport){
         if((req.user) && (req.user.username === req.USER.username)){
             res.render('profile', {data: {isUser: true, owner: req.USER.username, 
                 lastPage: lastPage, nextPage: nextPage,
-                threads: req.USER.threads, flash: req.flash('message')}, 
-                layout : 'layouts/main'})
+                threads: req.USER.threads, flash: req.flash('message')}})
         }
         else if (req.USER){
             res.render('profile', {data: {isUser: false, owner: req.USER.username, 
                 lastPage: lastPage, nextPage: nextPage,
-                threads: req.USER.threads, flash: req.flash('message')}, 
-                layout : 'layouts/main'})
+                threads: req.USER.threads, flash: req.flash('message')}})
         }
         else{
             req.flash('message', 'that profile page does not exist')
