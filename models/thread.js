@@ -64,8 +64,22 @@ function likeThread(req, res, next){
     }
 }
 
+function likeThreadAjax(req, res, next){
+    if(req.THREAD.likes.indexOf(req.user.username) !== -1){
+        res.json({'status' : 'error', 'message' : 'You have already liked that Thread.'})
+    }
+    else{
+        res.json({'status': 'success'})
+        req.THREAD.likes.push(req.user.username)
+        req.THREAD.save(function(err){
+            if(err) console.log(err)
+        })
+    }
+}
+
 // exports
 module.exports.model = threadModel
 module.exports.create = createThread
 module.exports.findById = findById
 module.exports.like = likeThread
+module.exports.likeAJAX = likeThreadAjax

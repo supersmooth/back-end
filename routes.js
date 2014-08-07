@@ -81,6 +81,11 @@ module.exports = function(app, passport){
         res.redirect(backURL)
     })
 
+    // 'like' thread erjerx
+    app.post('/api/thread/:thread/like', authUtils.isLoggedIn, Thread.likeAJAX, function(req,res){
+        
+    })
+
     // handles comment creation
     app.post('/thread/:thread', authUtils.isLoggedIn, Comment.create, function(req, res){
         res.redirect('/profile')
