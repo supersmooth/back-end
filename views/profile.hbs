@@ -12,7 +12,7 @@
 {{#each data.threads}}
 <div>{{this.body}}
 <br>
-[{{this.likes}} like] 
+[{{this.likes.length}} like] 
 
 <form action="/thread/{{this._id}}/like" method="post">
     <button type="submit">like</button>
@@ -24,7 +24,7 @@
         {{this.body}}
         <br>
         by: <a href="/u/{{this.author}}">{{this.author}}</a>
-        [{{this.likes}} like]
+        [{{this.likes.length}} like]
         <p class="_id">{{this._id}}</p>
     </p>
 {{/each}}

@@ -28,7 +28,9 @@ var userModel = mongoose.model('User', userSchema)
 function findByUsername(req, res, next){
     userModel
     .findOne({ 'username': req.params.username})
-    .populate('threads', null, null, {limit:20})
+    .populate('threads')
+    .skip(0)
+    .limit(10)
     .exec(function(err, user) {
         if(err) console.log(err)
         req.USER = user

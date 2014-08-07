@@ -7,7 +7,7 @@ var commentSchema = mongoose.Schema({
     body      : String,
     date      : Date,
     author    : String,
-    likes     : Number,
+    likes     : [String],
     isDeleted : Boolean,
     respondsTo: {type: Schema.ObjectId, ref: 'User'},
     replies   : [{ type: Schema.ObjectId, ref: 'Comment' }]
@@ -22,7 +22,7 @@ function createComment(req, res, next){
     var newComment = new commentModel({
         body: req.body.body,
         author: req.user.username,
-        likes: 1,
+        likes: [req.user.username],
         date: Date.now(),
     })
     req.THREAD.comments.push(newComment)
@@ -48,7 +48,12 @@ function createComment(req, res, next){
     })
 }
 
+function getComment(req, res, next){
+    //todo
+}
+
 // exports
 module.exports.model = commentModel
 module.exports.schema = commentSchema
 module.exports.create = createComment
+module.exports.get = getComment

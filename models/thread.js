@@ -7,7 +7,7 @@ var threadSchema = mongoose.Schema({
     body      : String,
     date      : Date,
     author    : String,
-    likes     : Number,
+    likes     : [String],
     comments  : [Comment.schema]
 })
 
@@ -19,7 +19,7 @@ function createThread(req, res, next) {
     var newThread = new threadModel({
         date: Date.now(),
         author: req.user.username,
-        likes: 1,
+        likes: [req.user.username],
         body: req.body.content
     })
     newThread.save(function (err, thread){
@@ -50,7 +50,7 @@ function findById(req, res, next) {
 }
 
 function likeThread(req, res, next){
-    req.THREAD.likes +=1
+    req.THREAD.likes.push(req.user.username)
     req.THREAD.save(function(err){
         if(err) console.log(err)
         next()
