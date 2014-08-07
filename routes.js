@@ -74,13 +74,10 @@ module.exports = function(app, passport){
     })
 
     // 'like' thread
-    app.post('/thread/:thread/like', function(req,res){
-        req.THREAD.likes +=1
-        req.THREAD.save(function(err){
-            if(err) console.log(err)
-            console.log(req.THREAD.likes + '!!!!!!!!!!!!!!!')
-            res.redirect('/profile')
-        })
+    // should redirect to last page
+    // thread.like should know if use has already liked this
+    app.post('/thread/:thread/like', authUtils.isLoggedIn, Thread.like, function(req,res){
+        res.end('/profile')
     })
 
     // handles comment creation

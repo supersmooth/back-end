@@ -49,7 +49,16 @@ function findById(req, res, next) {
     })
 }
 
+function likeThread(req, res, next){
+    req.THREAD.likes +=1
+    req.THREAD.save(function(err){
+        if(err) console.log(err)
+        next()
+    })
+}
+
 // exports
 module.exports.model = threadModel
 module.exports.create = createThread
 module.exports.findById = findById
+module.exports.like = likeThread
