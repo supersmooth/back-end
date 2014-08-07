@@ -12,7 +12,12 @@
 {{#each data.threads}}
 <div>{{this.body}}
 <br>
-[{{this.likes}} like] <form action="/thread/{{this._id}}/like" method="post"><button type="submit">like</button></form>
+[{{this.likes}} like] 
+
+<form action="/thread/{{this._id}}/like" method="post">
+    <button type="submit">like</button>
+</form>
+
 <p class="_id">{{this._id}}</p>
 {{#each this.comments}}
     <p class="nested">
@@ -40,6 +45,3 @@
         margin-left:50px;
     }
 </style>
-
-<script>
-</script>
