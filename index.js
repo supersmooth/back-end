@@ -9,7 +9,6 @@ var express = require('express')
 , hbs = require('hbs')
 , db = require('./db')
 , routes = require('./routes')
-, sockets = require('./sockets.js')
 
 // db
 db.connect(function(err){
