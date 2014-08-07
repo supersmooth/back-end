@@ -43,7 +43,7 @@ function findById(req, res, next) {
             next()
         }
         else {
-            req.flash('errorMessage', 'that thread page does not exist')
+            req.flash('message', 'Thread does not exist.')
             res.redirect('/')
         }
     })
@@ -51,7 +51,7 @@ function findById(req, res, next) {
 
 function likeThread(req, res, next){
     if(req.THREAD.likes.indexOf(req.user.username) !== -1){
-        req.flash('errorMessage', 'You have already liked that Thread.')
+        req.flash('message', 'You have already liked that Thread.')
         next()
     } 
     else {

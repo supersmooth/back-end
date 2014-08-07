@@ -22,12 +22,12 @@ module.exports = function (passport) {
     function (req, username, password, done) {
         process.nextTick(function() {
             
-            if (!validator.isLength(username, 6, 20)) return done(null, false, req.flash('signupMessage', 'username must be between 6 and 20 characters'))
-            if (!validator.isLength(password, 6, 100)) return done(null, false, req.flash('signupMessage', 'password must be between 6 and 20 characters'))
+            if (!validator.isLength(username, 6, 20)) return done(null, false, req.flash('message', 'username must be between 6 and 20 characters'))
+            if (!validator.isLength(password, 6, 100)) return done(null, false, req.flash('message', 'password must be between 6 and 20 characters'))
             
             User.model.findOne({ 'username' : username }, function (err, user) {
                 if (err) console.log(err)
-                if (user) return done(null, false, req.flash('signupMessage', 'That username is taken.'))
+                if (user) return done(null, false, req.flash('message', 'That username is taken.'))
 
                 else {
                     var newUser = new User.model()
@@ -51,8 +51,8 @@ module.exports = function (passport) {
     function(req, username, password, done) {
         User.model.findOne({ 'username' :  username }, function(err, user) {
             if (err) return done(err);
-            if (!user) return done(null, false, req.flash('loginMessage', 'that username does not exist!'))
-            if (!user.isValidPassword(password)) return done(null, false, req.flash('loginMessage', 'Ooops! wrong password'))
+            if (!user) return done(null, false, req.flash('message', 'that username does not exist!'))
+            if (!user.isValidPassword(password)) return done(null, false, req.flash('message', 'Ooops! wrong password'))
 
             else return done(null, user)
         })

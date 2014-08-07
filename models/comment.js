@@ -41,7 +41,7 @@ function createComment(req, res, next){
                 })
             }
             else {
-                req.flash('errorMessage', 'that profile page does not exist')
+                req.flash('message', 'Profile page does not exist')
                 res.redirect('/')
             }
         })
@@ -52,8 +52,13 @@ function getComment(req, res, next){
     //todo
 }
 
+function likeComment(req, res, next){
+    //todo
+}
+
 // exports
 module.exports.model = commentModel
 module.exports.schema = commentSchema
 module.exports.create = createComment
 module.exports.get = getComment
+module.exports.like = likeComment

@@ -1,7 +1,5 @@
 var express = require('express')
 , app = express()
-, http = require('http').Server(app)
-, io = require('socket.io')(http)
 , morgan = require('morgan')
 , cookieParser = require('cookie-parser')
 , bodyParser = require('body-parser')
@@ -41,11 +39,7 @@ app.use(flash())
 
 // routes
 routes(app, passport)
-
-// socket.io
-sockets(io)
-
 // start up
-http.listen(app.get('port'), function(){
+app.listen(app.get('port'), function(){
   console.log('listening on ' + app.get('port'));
 });
