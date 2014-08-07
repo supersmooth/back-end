@@ -30,13 +30,22 @@ module.exports = function(app, passport){
     })
 
     // user page
-    app.get('/u/:username', function(req, res){
+    app.get('/u/:username/:page?', function(req, res){
+
+        var lastPage = (req.params.page>1) ? (parseInt(req.params.page) -1) : 1
+        var nextPage = (req.params.page>1) ? (parseInt(req.params.page) +1) : 2
 
         if((req.user) && (req.user.username === req.USER.username)){
-            res.render('profile', {data: {isUser: true, threads: req.USER.threads, flash: req.flash('message')}, layout : 'layouts/main'})
+            res.render('profile', {data: {isUser: true, owner: req.USER.username, 
+                lastPage: lastPage, nextPage: nextPage,
+                threads: req.USER.threads, flash: req.flash('message')}, 
+                layout : 'layouts/main'})
         }
         else if (req.USER){
-            res.render('profile', {data : {isUser: false, threads: req.USER.threads}, layout : 'layouts/main'})
+            res.render('profile', {data: {isUser: false, owner: req.USER.username, 
+                lastPage: lastPage, nextPage: nextPage,
+                threads: req.USER.threads, flash: req.flash('message')}, 
+                layout : 'layouts/main'})
         }
         else{
             req.flash('message', 'that profile page does not exist')
