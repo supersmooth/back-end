@@ -33,7 +33,6 @@ module.exports = function(app, passport){
     app.get('/u/:username', function(req, res){
         
         if((req.user) && (req.user.username === req.USER.username)){
-            console.log(req.USER.threads)
             res.render('profile', {data: {isUser: true, threads: req.USER.threads}, layout : 'layouts/main'})
         }
         else if (req.USER){
@@ -74,9 +73,24 @@ module.exports = function(app, passport){
         res.redirect('/profile')
     })
 
+    // 'like' thread
+    app.post('/thread/:thread/like', function(req,res){
+        req.THREAD.likes +=1
+        req.THREAD.save(function(err){
+            if(err) console.log(err)
+            console.log(req.THREAD.likes + '!!!!!!!!!!!!!!!')
+            res.redirect('/profile')
+        })
+    })
+
     // handles comment creation
     app.post('/thread/:thread', authUtils.isLoggedIn, Comment.create, function(req, res){
         res.redirect('/profile')
+    })
+
+    // 'like' comment
+    app.post('/comment/:comment/like', function(req, res){
+        //todo
     })
 
     // 404 page

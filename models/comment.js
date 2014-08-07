@@ -25,6 +25,7 @@ function createComment(req, res, next){
     })
     req.THREAD.comments.push(newComment)
     req.THREAD.save(function (err, comment){
+        console.log(comment)
         if(err) console.log(err)
         next()
     })
