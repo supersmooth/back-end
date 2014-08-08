@@ -38,6 +38,20 @@ function findByUsername(req, res, next){
     })
 }
 
+// get threads from user 
+//todo: fix
+function getThreads_API(req, res){
+    userModel
+    .findOne({ 'username': req.params.username})
+    .populate('threads')
+    .exec(function(err, user){
+        if(err) console.log(err)
+        res.json(user.threads.slice(req.query.from, req.query.to))
+    })
+}
+
 // exports
 module.exports.model = userModel
 module.exports.findByUsername = findByUsername
+
+module.exports.getThreads_API = getThreads_API
