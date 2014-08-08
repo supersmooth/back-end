@@ -9,6 +9,7 @@ var express = require('express')
 , hbs = require('hbs')
 , db = require('./db')
 , routes = require('./routes')
+, api = require('./api')
 
 // db
 db.connect(function(err){
@@ -38,6 +39,10 @@ app.use(flash())
 
 // routes
 routes(app, passport)
+
+// api routes
+api(app)
+
 // start up
 app.listen(app.get('port'), function(){
   console.log('listening on ' + app.get('port'));

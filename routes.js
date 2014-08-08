@@ -81,11 +81,6 @@ module.exports = function(app, passport){
         res.redirect(backURL)
     })
 
-    // 'like' thread erjerx
-    app.post('/api/thread/:thread/like', authUtils.isLoggedIn, Thread.likeAJAX, function(req,res){
-        
-    })
-
     // handles comment creation
     app.post('/thread/:thread', authUtils.isLoggedIn, Comment.create, function(req, res){
         res.redirect('/profile')
@@ -97,7 +92,7 @@ module.exports = function(app, passport){
     })
 
     // 404 page
-    app.all('*', function (req, res) {
+    app.get('*', function (req, res) {
         res.status(404).render('404')
     })
 }
