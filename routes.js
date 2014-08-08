@@ -30,11 +30,13 @@ module.exports = function(app, passport){
     app.get('/u/:username', User.findByUsername, function(req, res){
 
         if((req.user) && (req.user.username === req.USER.username)){
-            res.render('profile', {data: {isUser: true, owner: req.USER.username, 
+            res.render('profile', {data: {isUser: true, owner: req.USER.username,
+                friends: req.USER.friends,
                 threads: req.USER.threads, flash: req.flash('message')}})
         }
         else if (req.USER){
-            res.render('profile', {data: {isUser: false, owner: req.USER.username, 
+            res.render('profile', {data: {isUser: false, owner: req.USER.username,
+                friends: req.USER.friends,
                 threads: req.USER.threads, flash: req.flash('message')}})
         }
         else{
