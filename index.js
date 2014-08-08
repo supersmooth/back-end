@@ -14,7 +14,7 @@ var express = require('express')
 // db
 db.connect(function(err){
     if(err) return console.error("Couldn't connect to database!")
-    console.info("Connect to database successfully")
+    console.info("Connected to database successfully")
 })
 
 require('./authentication/passport')(passport)
