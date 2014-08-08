@@ -71,9 +71,4 @@ module.exports = function(app, passport){
     app.post('/thread/:thread', Thread.findById, authUtils.isLoggedIn, Comment.create, function(req, res){
         res.redirect('/profile')
     })
-
-    // 'like' comment
-    app.post('/comment/:comment/like', function(req, res){
-        //todo
-    })
 }

@@ -27,14 +27,20 @@ var userModel = mongoose.model('User', userSchema)
 // middleware
 function findByUsername(req, res, next){
     userModel
-    .findOne({ 'username': req.params.username})
+    .findOne({ 'username': req.params.username })
     .populate('threads')
     .skip(0)
     .limit(10)
     .exec(function(err, user) {
         if(err) console.log(err)
-        req.USER = user
-        next()
+        if(user){
+            req.USER = user
+            next()
+        }
+        else{
+            req.flash('message', 'User doesn\'t exist')
+            res.redirect('/')
+        }
     })
 }
 
@@ -60,8 +66,24 @@ function getThreads_API(req, res){
     }
 }
 
+function findByUsername_API(req, res, next){
+    userModel
+    .findOne({ 'username': req.params.username })
+    .exec(function(err, user){
+        if(err) console.log(err)
+        if(user){
+            req.USER = user
+            next()
+        }
+        else{
+            res.json({'status' : 'error', 'message' : 'User doesn\'t exist'})
+        }
+    })
+}
+
 // exports
 module.exports.model = userModel
 module.exports.findByUsername = findByUsername
 
 module.exports.getThreads_API = getThreads_API
+module.exports.findByUsername_API = findByUsername_API

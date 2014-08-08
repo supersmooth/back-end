@@ -18,6 +18,14 @@ module.exports = function(app){
     // create comment
     app.post('/api/thread/:thread/comment', Thread.findById_API, Comment.create_API)
 
+    // 'like comment'
+    //TODO TODO TODO
+    app.post('/api/thread/:thread/comment/:comment', Thread.findById_API)
+
+    // add friend
+    //TODO TODO TODO
+    app.put('/api/u/:username/add', authUtils.isLoggedIn_API, User.findByUsername_API)
+
     // 404 page
     app.get('*', function (req, res) {
         res.status(404).render('404')
