@@ -27,15 +27,37 @@ userSchema.methods.isValidPassword = function(password) {
 var userModel = mongoose.model('User', userSchema)
 
 // add friend
-function friendRequest_API(req, res, next){
-    req.user.friends.push(req.USER.username)
-    req.user.save(function (err) {
-        if(err) {
-            console.log(err)
-            res.json({'status' : 'error', 'message' : 'server error, try again'})
-        }
-        else res.json({'status' : 'success', 'message' : 'friend reqquest sent'})
-    })
+// test this!
+function addFriend_API(req, res, next){
+
+    if(req.user.username === req.USER.username){
+        res.json({'status' : 'error', 'message' : 'You can\'t add yourself as a friend!'})
+    }
+
+    else if(req.user.friends.indexOf(req.USER.username) !== -1 &&
+            req.USER.friends.indexOf(req.user.username) !== -1){
+        res.json({'status' : 'error', 'message' : 'You are already friends!'})
+    }
+
+    else if(req.user.friends.indexOf(req.USER.username) === -1 &&
+            req.USER.friends.indexOf(req.user.username) !== -1){
+        res.json({'status' : 'success', 'message' : 'You have accepted a friend request'})
+    }
+
+    else if(req.USER.friends.indexOf(req.user.username) !== -1){
+        res.json({'status' : 'error', 'message' : 'You have already added this user.'})
+    }
+
+    else{
+        req.user.friends.push(req.USER.username)
+        req.user.save(function (err) {
+            if(err) {
+                console.log(err)
+                res.json({'status' : 'error', 'message' : 'server error, try again'})
+            }
+            else res.json({'status' : 'success', 'message' : 'friend reqquest sent'})
+        })
+    }
 }
 
 // middleware
@@ -101,4 +123,4 @@ module.exports.findByUsername = findByUsername
 
 module.exports.getThreads_API = getThreads_API
 module.exports.findByUsername_API = findByUsername_API
-module.exports.friendRequest_API = friendRequest_API
+module.exports.addFriend_API = addFriend_API
