@@ -39,7 +39,6 @@ function findByUsername(req, res, next){
 }
 
 // get threads from user 
-//todo: fix
 function getThreads_API(req, res){
 
     if(req.query.limit > 20){

@@ -91,10 +91,10 @@ function likeThread_API(req, res, next){
         res.json({'status' : 'error', 'message' : 'You have already liked that Thread.'})
     }
     else{
-        res.json({'status': 'success'})
         req.THREAD.likes.push(req.user.username)
         req.THREAD.save(function(err){
             if(err) console.log(err)
+            res.json({'status': 'success'})
         })
     }
 }
