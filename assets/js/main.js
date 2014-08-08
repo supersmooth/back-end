@@ -40,10 +40,8 @@ function request (ele, id) {
 				counter[1] = Number(counter[1]) + 1
 				likeSpan.innerHTML = counter.join('')
 			}
-			else {
-				console.log(error.className)
+			else 
 				error.className = error.className.replace('hidden', '')
-			}
 
 		})
 	}
