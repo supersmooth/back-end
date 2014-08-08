@@ -22,12 +22,33 @@ function createThread(req, res, next) {
         likes: [req.user.username],
         body: req.body.content
     })
+    console.log(newThread)
     newThread.save(function (err, thread){
         if (err) console.log(err)
         req.user.threads.push(thread._id)
         req.user.save(function (err) {
             if (err) console.log(err)
             next()
+        })
+    })
+}
+
+// Thread create ajax
+function createThreadAjax(req, res){
+    var newThread = new threadModel({
+        date: Date.now(),
+        author: req.user.username,
+        likes: [req.user.username],
+        body: req.body.content
+    })
+
+    res.json(newThread)
+
+    newThread.save(function (err, thread){
+        if (err) console.log(err)
+        req.user.threads.push(thread._id)
+        req.user.save(function (err) {
+            if (err) console.log(err)
         })
     })
 }
@@ -83,3 +104,4 @@ module.exports.create = createThread
 module.exports.findById = findById
 module.exports.like = likeThread
 module.exports.likeAJAX = likeThreadAjax
+module.exports.createAJAX = createThreadAjax

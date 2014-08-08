@@ -6,6 +6,9 @@ var authUtils = require('./authentication/utils')
 
 module.exports = function(app){
 
-	// 'like' thread erjerx
+	// 'like' thread 
     app.post('/api/thread/:thread/like', authUtils.isLoggedIn, Thread.likeAJAX)
+
+    // handles thread creation
+    app.post('/api/thread', authUtils.isLoggedIn, Thread.createAJAX)
 }
