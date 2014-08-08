@@ -41,13 +41,24 @@ function findByUsername(req, res, next){
 // get threads from user 
 //todo: fix
 function getThreads_API(req, res){
-    userModel
-    .findOne({ 'username': req.params.username})
-    .populate('threads')
-    .exec(function(err, user){
-        if(err) console.log(err)
-        res.json(user.threads.slice(req.query.from, req.query.to))
-    })
+
+    if(req.query.limit > 20){
+        res.json({'status' : 'error', 'message' : 'max limit = 20'})
+    }
+
+    else if(!req.query.limit || !req.query.offset){
+        res.json({'status' : 'error', 'message' : 'invalid query'})
+    }
+
+    else{
+        userModel
+        .findOne({ 'username': req.params.username})
+        .populate('threads')
+        .exec(function(err, user){
+            if(err) console.log(err)
+            res.json(user.threads.slice(req.query.offset, req.query.limit))
+        })
+    }
 }
 
 // exports
