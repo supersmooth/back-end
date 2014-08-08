@@ -53,14 +53,4 @@
 {{/each}}
 {{!-- for each thread on profile --}}
 
-    {{!-- go to last page --}}
-    <form action="/u/{{data.owner}}/{{data.lastPage}}" method="get">
-        <button type="submit">previous page</button>
-    </form>
-
-    {{!-- go to next page --}}
-    <form action="/u/{{data.owner}}/{{data.nextPage}}" method="get">
-        <button type="submit">next page</button>
-    </form>
-
 </div>

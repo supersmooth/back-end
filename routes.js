@@ -27,19 +27,14 @@ module.exports = function(app, passport){
     })
 
     // user page
-    app.get('/u/:username/:page?', User.findByUsername, function(req, res){
-
-        var lastPage = (req.params.page>1) ? (parseInt(req.params.page) -1) : 1
-        var nextPage = (req.params.page>1) ? (parseInt(req.params.page) +1) : 2
+    app.get('/u/:username', User.findByUsername, function(req, res){
 
         if((req.user) && (req.user.username === req.USER.username)){
             res.render('profile', {data: {isUser: true, owner: req.USER.username, 
-                lastPage: lastPage, nextPage: nextPage,
                 threads: req.USER.threads, flash: req.flash('message')}})
         }
         else if (req.USER){
             res.render('profile', {data: {isUser: false, owner: req.USER.username, 
-                lastPage: lastPage, nextPage: nextPage,
                 threads: req.USER.threads, flash: req.flash('message')}})
         }
         else{
