@@ -9,50 +9,55 @@
 {{#if data.isUser}}
     <div class="col-lg-12">
         <form action="/thread" method="post">
-            <textarea name="content" cols="30" rows="10" placeholder="Enter Thread..." class="form-control"></textarea>
+            <textarea name="content" cols="30" rows="3" placeholder="Enter Thread..." class="form-control"></textarea>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 {{/if}}
-
+<h3> Latest Posts:</h3>
 <h2>{{data.flash}}</h2>
 
 <hr>
 
 {{!-- for each thread on profile --}}
 {{#each data.threads}}
-
-    <div class="col-lg-6">
-        {{this.body}}
+    <div class="col-lg-6 thread">
+        <a href="/u/{{this.author}}" class="comment-author">{{this.author}}</a>
+        <p class="comment-body" data-threadId="{{this._id}}">
+            {{this.body}}
+        </p>
         <br>
-       <span>[{{this.likes.length}} like(s)]</span>
-       <span class='error hidden'>You've already liked this!</span>
-        
-        {{!-- like this thread --}}
-        <button id="{{this._id}}" class="like">like</button>
+        <span class="likes">[{{this.likes.length}} like(s)] </span>
+        <span class='error hidden'>You've already liked this!</span>
 
+        <form action="/thread/{{this._id}}/like" method="post">
+            <button type="submit" class="">like</button>
+        </form>
         {{!-- for each comment in thread --}}
         {{#each this.comments}}
-            <p class="nested">
-                {{this.body}}
-                <br>
-                by: <a href="/u/{{this.author}}">{{this.author}}</a>
-                [{{this.likes.length}} like]
-                <p class="_id">{{this._id}}</p>
-            </p>
-        {{/each}}  
+            <div class="nested comment" data-commentId="{{this._id}}">
+                <a href="/u/{{this.author}}" class="comment-author">{{this.author}}</a>
+                <p class="comment-body">{{this.body}}</p>
+                <span class="likes">[{{this.likes.length}} like(s)] </span>
+            </div>
+        {{/each}}
         {{!-- for each comment in thread --}}
-
-    </div>
-        
         <form action="/thread/{{this._id}}" method="post">
-            <br>
-            <input name="body" cols="30" rows="1" placeholder="Enter Comment..."></textarea>
-            <button type="submit">submit comment</button>
+            <input name="body" placeholder="Enter Comment..." class="form-control post-comment">
+            <button type="submit" class="btn btn-primary">submit comment</button>
         </form>
+    </div>
     <hr>
 
 {{/each}}
 {{!-- for each thread on profile --}}
+    <div class="col-lg-12">
+        <form action="/u/{{data.owner}}/{{data.lastPage}}" method="get">
+            <button type="submit" class="btn btn-primary">previous page</button>
+        </form>
 
-</div>
+        <form action="/u/{{data.owner}}/{{data.nextPage}}" method="get">
+            <button type="submit" class="btn btn-primary">next page</button>
+        </form>
+    </div>
+</div><!-- END ROW -->
