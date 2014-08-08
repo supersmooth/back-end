@@ -34,7 +34,7 @@ function createThread(req, res, next) {
 }
 
 // Thread create ajax
-function createThreadAjax(req, res){
+function createThread_API(req, res){
     var newThread = new threadModel({
         date: Date.now(),
         author: req.user.username,
@@ -85,7 +85,7 @@ function likeThread(req, res, next){
     }
 }
 
-function likeThreadAjax(req, res, next){
+function likeThread_API(req, res, next){
     if(req.THREAD.likes.indexOf(req.user.username) !== -1){
         res.json({'status' : 'error', 'message' : 'You have already liked that Thread.'})
     }
@@ -103,5 +103,5 @@ module.exports.model = threadModel
 module.exports.create = createThread
 module.exports.findById = findById
 module.exports.like = likeThread
-module.exports.likeAJAX = likeThreadAjax
-module.exports.createAJAX = createThreadAjax
+module.exports.like_API = likeThread_API
+module.exports.create_API = createThread_API
