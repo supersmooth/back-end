@@ -7,13 +7,13 @@ var authUtils = require('./authentication/utils')
 module.exports = function(app){
 
 	// 'like' thread 
-    app.post('/api/thread/:thread/like', authUtils.isLoggedIn_API, Thread.like_API)
+    app.post('/api/thread/:thread/like', authUtils.isLoggedIn_API, Thread.findById_API, Thread.like_API)
 
     // handles thread creation
     app.post('/api/thread', authUtils.isLoggedIn_API, Thread.create_API)
 
     //users threads query // fix...
-    app.get('/api/u/:username/thread', User.getThreads_API)
+    app.get('/api/u/:username/thread', User.findByUsername, User.getThreads_API)
 
     // 404 page
     app.get('*', function (req, res) {

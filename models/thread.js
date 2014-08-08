@@ -70,6 +70,22 @@ function findById(req, res, next) {
     })
 }
 
+// Thread find middleware
+function findById_API(req, res, next) {
+    threadModel
+    .findById(req.params.thread)
+    .exec(function(err, thread){
+        if(err) console.log(err)
+        if(thread){
+            req.THREAD = thread
+            next()
+        }
+        else {
+            res.json({'status' : 'error', 'message' : 'Thread does not exist.'})
+        }
+    })
+}
+
 function likeThread_API(req, res, next){
     if(req.THREAD.likes.indexOf(req.user.username) !== -1){
         res.json({'status' : 'error', 'message' : 'You have already liked that Thread.'})
@@ -89,3 +105,4 @@ module.exports.create = createThread
 module.exports.findById = findById
 module.exports.like_API = likeThread_API
 module.exports.create_API = createThread_API
+module.exports.findById_API = findById_API

@@ -6,9 +6,6 @@ var authUtils = require('./authentication/utils')
 
 module.exports = function(app, passport){
 
-    app.param('thread', Thread.findById)
-    app.param('username', User.findByUsername)
-
     // landing page
     app.get('/', function (req, res){
         res.render('index', {message: req.flash('message')})
@@ -30,7 +27,7 @@ module.exports = function(app, passport){
     })
 
     // user page
-    app.get('/u/:username/:page?', function(req, res){
+    app.get('/u/:username/:page?', User.findByUsername, function(req, res){
 
         var lastPage = (req.params.page>1) ? (parseInt(req.params.page) -1) : 1
         var nextPage = (req.params.page>1) ? (parseInt(req.params.page) +1) : 2
@@ -71,12 +68,12 @@ module.exports = function(app, passport){
     }))
 
     // handles thread creation
-    app.post('/thread', authUtils.isLoggedIn, Thread.create, function (req, res){
+    app.post('/thread', Thread.findById, authUtils.isLoggedIn, Thread.create, function (req, res){
         res.redirect('/profile')
     })
 
     // handles comment creation
-    app.post('/thread/:thread', authUtils.isLoggedIn, Comment.create, function(req, res){
+    app.post('/thread/:thread', Thread.findById, authUtils.isLoggedIn, Comment.create, function(req, res){
         res.redirect('/profile')
     })
 
