@@ -9,6 +9,8 @@ var userSchema = mongoose.Schema({
     email   : String,
     username: String,
     password: String, 
+
+    friends : [String],
     
     comments: [Comment.schema],
     threads : [{ type: Schema.Types.ObjectId, ref: 'Thread' }]
@@ -23,6 +25,18 @@ userSchema.methods.isValidPassword = function(password) {
 }
 
 var userModel = mongoose.model('User', userSchema)
+
+// add friend
+function friendRequest_API(req, res, next){
+    req.user.friends.push(req.USER.username)
+    req.user.save(function (err) {
+        if(err) {
+            console.log(err)
+            res.json({'status' : 'error', 'message' : 'server error, try again'})
+        }
+        else res.json({'status' : 'success', 'message' : 'friend reqquest sent'})
+    })
+}
 
 // middleware
 function findByUsername(req, res, next){
@@ -87,3 +101,4 @@ module.exports.findByUsername = findByUsername
 
 module.exports.getThreads_API = getThreads_API
 module.exports.findByUsername_API = findByUsername_API
+module.exports.friendRequest_API = friendRequest_API

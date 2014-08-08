@@ -22,9 +22,9 @@ module.exports = function(app){
     //TODO TODO TODO
     app.post('/api/thread/:thread/comment/:comment', Thread.findById_API)
 
-    // add friend
+    // send friend request
     //TODO TODO TODO
-    app.put('/api/u/:username/add', authUtils.isLoggedIn_API, User.findByUsername_API)
+    app.put('/api/u/:username/add', authUtils.isLoggedIn_API, User.findByUsername_API, User.friendRequest_API)
 
     // 404 page
     app.get('*', function (req, res) {
