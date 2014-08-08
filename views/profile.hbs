@@ -16,17 +16,19 @@
 <h2>{{data.flash}}</h2>
 
 <hr>
+
+{{!-- for each thread on profile --}}
 {{#each data.threads}}
+
     <div class="col-lg-6">
         {{this.body}}
         <br>
         [{{this.likes.length}} like(s)] 
+        
+        {{!-- like this thread --}}
+        <button id="{{this._id}}">like</button>
 
-        <form action="/thread/{{this._id}}/like" method="post">
-            <button type="submit">like</button>
-        </form>
-
-        <p class="_id">{{this._id}}</p>
+        {{!-- for each comment in thread --}}
         {{#each this.comments}}
             <p class="nested">
                 {{this.body}}
@@ -36,6 +38,8 @@
                 <p class="_id">{{this._id}}</p>
             </p>
         {{/each}}
+        {{!-- for each comment in thread --}}
+
     </div>
         <form action="/thread/{{this._id}}" method="post">
             <br>
@@ -43,12 +47,18 @@
             <button type="submit">submit comment</button>
         </form>
     <hr>
+
 {{/each}}
+{{!-- for each thread on profile --}}
+
+    {{!-- go to last page --}}
     <form action="/u/{{data.owner}}/{{data.lastPage}}" method="get">
         <button type="submit">previous page</button>
     </form>
 
+    {{!-- go to next page --}}
     <form action="/u/{{data.owner}}/{{data.nextPage}}" method="get">
         <button type="submit">next page</button>
     </form>
+
 </div>
