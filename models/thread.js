@@ -33,8 +33,8 @@ function createThread(req, res, next) {
     })
 }
 
-// Thread create ajax
-function createThreadAjax(req, res){
+// Thread create api
+function createThread_API(req, res){
     var newThread = new threadModel({
         date: Date.now(),
         author: req.user.username,
@@ -70,30 +70,31 @@ function findById(req, res, next) {
     })
 }
 
-function likeThread(req, res, next){
-    if(req.THREAD.likes.indexOf(req.user.username) !== -1){
-        req.flash('message', 'You have already liked that Thread.')
-        next()
-    } 
-    else {
-        console.log(req.THREAD.likes.indexOf(req.user.username))
-        req.THREAD.likes.push(req.user.username)
-        req.THREAD.save(function(err){
-            if(err) console.log(err)
+// Thread find middleware
+function findById_API(req, res, next) {
+    threadModel
+    .findById(req.params.thread)
+    .exec(function(err, thread){
+        if(err) console.log(err)
+        if(thread){
+            req.THREAD = thread
             next()
-        })
-    }
+        }
+        else {
+            res.json({'status' : 'error', 'message' : 'Thread does not exist.'})
+        }
+    })
 }
 
-function likeThreadAjax(req, res, next){
+function likeThread_API(req, res, next){
     if(req.THREAD.likes.indexOf(req.user.username) !== -1){
         res.json({'status' : 'error', 'message' : 'You have already liked that Thread.'})
     }
     else{
-        res.json({'status': 'success'})
         req.THREAD.likes.push(req.user.username)
         req.THREAD.save(function(err){
             if(err) console.log(err)
+            res.json({'status': 'success'})
         })
     }
 }
@@ -102,6 +103,6 @@ function likeThreadAjax(req, res, next){
 module.exports.model = threadModel
 module.exports.create = createThread
 module.exports.findById = findById
-module.exports.like = likeThread
-module.exports.likeAJAX = likeThreadAjax
-module.exports.createAJAX = createThreadAjax
+module.exports.like_API = likeThread_API
+module.exports.create_API = createThread_API
+module.exports.findById_API = findById_API

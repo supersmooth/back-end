@@ -6,9 +6,6 @@ var authUtils = require('./authentication/utils')
 
 module.exports = function(app, passport){
 
-    app.param('thread', Thread.findById)
-    app.param('username', User.findByUsername)
-
     // landing page
     app.get('/', function (req, res){
         res.render('index', {message: req.flash('message')})
@@ -30,19 +27,16 @@ module.exports = function(app, passport){
     })
 
     // user page
-    app.get('/u/:username/:page?', function(req, res){
-
-        var lastPage = (req.params.page>1) ? (parseInt(req.params.page) -1) : 1
-        var nextPage = (req.params.page>1) ? (parseInt(req.params.page) +1) : 2
+    app.get('/u/:username', User.findByUsername, function(req, res){
 
         if((req.user) && (req.user.username === req.USER.username)){
-            res.render('profile', {data: {isUser: true, owner: req.USER.username, 
-                lastPage: lastPage, nextPage: nextPage,
+            res.render('profile', {data: {isUser: true, owner: req.USER.username,
+                friends: req.USER.friends,
                 threads: req.USER.threads, flash: req.flash('message')}})
         }
         else if (req.USER){
-            res.render('profile', {data: {isUser: false, owner: req.USER.username, 
-                lastPage: lastPage, nextPage: nextPage,
+            res.render('profile', {data: {isUser: false, owner: req.USER.username,
+                friends: req.USER.friends,
                 threads: req.USER.threads, flash: req.flash('message')}})
         }
         else{
@@ -71,28 +65,13 @@ module.exports = function(app, passport){
     }))
 
     // handles thread creation
-    app.post('/thread', authUtils.isLoggedIn, Thread.create, function (req, res){
+    app.post('/thread', Thread.findById, authUtils.isLoggedIn, Thread.create, function (req, res){
         res.redirect('/profile')
-    })
-
-    // 'like' thread
-    app.post('/thread/:thread/like', authUtils.isLoggedIn, Thread.like, function(req,res){
-        backURL=req.header('Referer') || '/';
-        res.redirect(backURL)
     })
 
     // handles comment creation
-    app.post('/thread/:thread', authUtils.isLoggedIn, Comment.create, function(req, res){
-        res.redirect('/profile')
-    })
-
-    // 'like' comment
-    app.post('/comment/:comment/like', function(req, res){
-        //todo
-    })
-
-    // 404 page
-    app.get('*', function (req, res) {
-        res.status(404).render('404')
+    app.post('/thread/:thread', Thread.findById, authUtils.isLoggedIn, Comment.create, function(req, res){
+        backURL=req.header('Referer') || '/'
+        res.redirect(backURL)
     })
 }

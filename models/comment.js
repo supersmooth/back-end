@@ -48,11 +48,29 @@ function createComment(req, res, next){
     })
 }
 
-function getComment(req, res, next){
-    //todo
+// create comment API
+// should save comment reference on creator?
+function createComment_API(req, res){
+    var newComment = new commentModel({
+        body: req.body.body,
+        author: req.user.username,
+        likes: [req.user.username],
+        date: Date.now(),
+    })
+    req.THREAD.comments.push(newComment)
+    req.THREAD.save(function (err, comment){
+        if(err){
+            console.log(err)
+            res.json({'status' : 'error', 'message' : 'server error, try again'})
+        }
+        else res.json({'status' : 'success', 'message' : 'Comment created.'})
+    })
 }
 
-function likeComment(req, res, next){
+function findById_API(req, res, next){
+}
+
+function likeComment_API(req, res, next){
     //todo
 }
 
@@ -60,5 +78,7 @@ function likeComment(req, res, next){
 module.exports.model = commentModel
 module.exports.schema = commentSchema
 module.exports.create = createComment
-module.exports.get = getComment
-module.exports.like = likeComment
+
+module.exports.findById_API = findById_API
+module.exports.like_API = likeComment_API
+module.exports.create_API = createComment_API
