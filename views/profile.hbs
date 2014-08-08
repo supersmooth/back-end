@@ -26,7 +26,7 @@
         [{{this.likes.length}} like(s)] 
         
         {{!-- like this thread --}}
-        <button id="{{this._id}}">like</button>
+        <button id="{{this._id}}" class="like">like</button>
 
         {{!-- for each comment in thread --}}
         {{#each this.comments}}
@@ -36,11 +36,12 @@
                 by: <a href="/u/{{this.author}}">{{this.author}}</a>
                 [{{this.likes.length}} like]
                 <p class="_id">{{this._id}}</p>
-            </p>
-        {{/each}}
-        {{!-- for each comment in thread --}}
-
+            </p>    
     </div>
+{{/each}}
+        {{!-- for each comment in thread --}}
+    
+
         <form action="/thread/{{this._id}}" method="post">
             <br>
             <input name="body" cols="30" rows="1" placeholder="Enter Comment..."></textarea>
