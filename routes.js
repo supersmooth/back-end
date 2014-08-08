@@ -71,6 +71,7 @@ module.exports = function(app, passport){
 
     // handles comment creation
     app.post('/thread/:thread', Thread.findById, authUtils.isLoggedIn, Comment.create, function(req, res){
-        res.redirect('/profile')
+        backURL=req.header('Referer') || '/'
+        res.redirect(backURL)
     })
 }
