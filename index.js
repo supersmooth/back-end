@@ -25,7 +25,7 @@ app.set('port', process.env.PORT || 5000)
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.static('./public'))
+app.use(express.static('./assets'))
 
 app.set('view engine', 'hbs')
 app.locals.layout = '/layouts/main.hbs'
