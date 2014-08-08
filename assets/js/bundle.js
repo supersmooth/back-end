@@ -6460,27 +6460,26 @@ function hasOwnProperty(obj, prop) {
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./support/isBuffer":"/home/jacob/.nvm/v0.10.29/lib/node_modules/watchify/node_modules/browserify/node_modules/util/support/isBufferBrowser.js","_process":"/home/jacob/.nvm/v0.10.29/lib/node_modules/watchify/node_modules/browserify/node_modules/process/browser.js","inherits":"/home/jacob/.nvm/v0.10.29/lib/node_modules/watchify/node_modules/browserify/node_modules/inherits/inherits_browser.js"}],"/home/jacob/Documents/supersmooth/back-end/assets/js/main.js":[function(require,module,exports){
 var http = require('http')
-, walk = require('dom-walk')
 , row = document.getElementsByClassName('row')[0]
+, error
+, button
+, id 
+, parent
+, likeSpan
+, counter
 
 function getLikes(e) {
-	e.preventDefault()
 	var targ = e.target
-	, parent 
-	, button
-	, id 
 
-	if(targ.innerHTML === 'like') {
-		parent = targ.parentNode.parentNode
+	if(targ.className === 'like') {
 		button = targ
-		walk(parent.children, getPiD)
+		id = targ.id
+		parent = button.parentNode.children
+		likeSpan = parent[1]
+		error = parent[2]
+		request(button, id)
 	}
 
-	function getPiD(node) {
-		if(node.className === '_id') id = node.innerHTML
-	}
-
-	request(button, id)
 }
 
 function request (ele, id) {
@@ -6490,40 +6489,29 @@ function request (ele, id) {
 	 	path: route
 	 }, likes)
 
-	req.end()
-
 	function likes (res) {
+		var data = ''
 		res.on('data', function (buf) {
-			console.log(buf)
+			data += buf
+		})
+		res.on('end', function () {
+			data = JSON.parse(data)
+			if(data.status === 'success')	{
+				counter = likeSpan.innerHTML.split('')
+				counter[1] = Number(counter[1]) + 1
+				likeSpan.innerHTML = counter.join('')
+			}
+			else {
+				console.log(error.className)
+				error.className = error.className.replace('hidden', '')
+			}
+
 		})
 	}
+
+	req.end()
 }
 
-row.addEventListener('click', getLikes)
-},{"dom-walk":"/home/jacob/Documents/supersmooth/back-end/node_modules/dom-walk/index.js","http":"/home/jacob/.nvm/v0.10.29/lib/node_modules/watchify/node_modules/browserify/node_modules/http-browserify/index.js"}],"/home/jacob/Documents/supersmooth/back-end/node_modules/dom-walk/index.js":[function(require,module,exports){
-var slice = Array.prototype.slice
-
-module.exports = iterativelyWalk
-
-function iterativelyWalk(nodes, cb) {
-    if (!('length' in nodes)) {
-        nodes = [nodes]
-    }
-    
-    nodes = slice.call(nodes)
-
-    while(nodes.length) {
-        var node = nodes.shift(),
-            ret = cb(node)
-
-        if (ret) {
-            return ret
-        }
-
-        if (node.childNodes && node.childNodes.length) {
-            nodes = slice.call(node.childNodes).concat(nodes)
-        }
-    }
-}
-
-},{}]},{},["/home/jacob/Documents/supersmooth/back-end/assets/js/main.js"]);
+if(row)
+	row.addEventListener('click', getLikes)
+},{"http":"/home/jacob/.nvm/v0.10.29/lib/node_modules/watchify/node_modules/browserify/node_modules/http-browserify/index.js"}]},{},["/home/jacob/Documents/supersmooth/back-end/assets/js/main.js"]);

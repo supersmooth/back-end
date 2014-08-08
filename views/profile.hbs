@@ -23,7 +23,8 @@
     <div class="col-lg-6">
         {{this.body}}
         <br>
-        [{{this.likes.length}} like(s)] 
+       <span>[{{this.likes.length}} like(s)]</span>
+       <span class='error hidden'>You've already liked this!</span>
         
         {{!-- like this thread --}}
         <button id="{{this._id}}" class="like">like</button>
