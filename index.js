@@ -1,5 +1,5 @@
 var express = require('express')
-, app = express()
+, app = exports.app = express()
 , morgan = require('morgan')
 , cookieParser = require('cookie-parser')
 , bodyParser = require('body-parser')
@@ -10,6 +10,20 @@ var express = require('express')
 , db = require('./db')
 , routes = require('./routes')
 , api = require('./api')
+, fs = require('fs')
+
+// load partials
+var partialsDir = __dirname + '/views/partials'
+var filenames = fs.readdirSync(partialsDir)
+filenames.forEach(function (filename) {
+  var matches = /^([^.]+).hbs$/.exec(filename)
+  if(!matches) {
+    return;
+  }
+  var name = matches[1];
+  var template = fs.readFileSync(partialsDir + '/' + filename, 'utf8')
+  hbs.registerPartial(name, template);
+})
 
 // db
 db.connect(function(err){
@@ -27,10 +41,9 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('./assets'))
 
-app.set('view engine', 'hbs')
 app.locals.layout = '/layouts/main.hbs'
+app.set('view engine', 'hbs')
 app.locals.cache = false
-hbs.registerPartials(__dirname + '/views/partials')
 
 app.use(session({ secret: 'session-secret-stuff', saveUninitialized: true, resave: true }))
 app.use(passport.initialize())

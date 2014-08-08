@@ -67,11 +67,10 @@ function createComment_API(req, res){
     })
 }
 
-function getComment(req, res, next){
-    //todo
+function findById_API(req, res, next){
 }
 
-function likeComment(req, res, next){
+function likeComment_API(req, res, next){
     //todo
 }
 
@@ -79,6 +78,7 @@ function likeComment(req, res, next){
 module.exports.model = commentModel
 module.exports.schema = commentSchema
 module.exports.create = createComment
-module.exports.get = getComment
-module.exports.like = likeComment
+
+module.exports.findById_API = findById_API
+module.exports.like_API = likeComment_API
 module.exports.create_API = createComment_API

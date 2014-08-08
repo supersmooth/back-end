@@ -33,6 +33,8 @@
   },
   "devDependencies": {
     "morgan": "^1.2.2",
-    "nodemon": "^1.2.1"
+    "nodemon": "^1.2.1",
+    "should": "^4.0.4",
+    "supertest": "^0.13.0"
   }
 }

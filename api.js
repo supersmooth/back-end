@@ -20,7 +20,7 @@ module.exports = function(app){
 
     // 'like comment'
     //TODO TODO TODO
-    app.post('/api/thread/:thread/comment/:comment', Thread.findById_API)
+    app.post('/api/thread/:thread/comment/:comment', authUtils.isLoggedIn_API, Thread.findById_API, Comment.findById_API, Comment.like_API)
 
     // send friend request/accept friend request
     // needs testing
