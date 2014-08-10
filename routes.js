@@ -50,6 +50,11 @@ module.exports = function(app, passport){
         res.redirect('/')
     })
 
+    // thread page
+    app.get('/thread/:thread', Thread.findById, function(req, res){
+        res.render('thread', {data: {thread: req.THREAD, flash: req.flash('message')}})
+    })
+
     // handles signup
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect: '/profile',
@@ -67,7 +72,7 @@ module.exports = function(app, passport){
     // handles thread creation
     app.post('/thread', authUtils.isLoggedIn, Thread.create, function (req, res){
         console.log(req.THREAD)
-        res.redirect('/profile')
+        res.redirect('/thread/' + req.THREAD._id)
     })
 
     // handles comment creation

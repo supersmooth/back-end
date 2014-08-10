@@ -28,6 +28,7 @@ function createThread(req, res, next) {
         req.user.threads.push(thread._id)
         req.user.save(function (err) {
             if (err) console.log(err)
+            req.THREAD = thread
             next()
         })
     })
