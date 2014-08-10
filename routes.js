@@ -65,7 +65,8 @@ module.exports = function(app, passport){
     }))
 
     // handles thread creation
-    app.post('/thread', Thread.findById, authUtils.isLoggedIn, Thread.create, function (req, res){
+    app.post('/thread', authUtils.isLoggedIn, Thread.create, function (req, res){
+        console.log(req.THREAD)
         res.redirect('/profile')
     })
 
