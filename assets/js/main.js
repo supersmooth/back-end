@@ -1,5 +1,6 @@
 var request = require('superagent')
-,   like = require('./modules/like')
+,   Like = require('./modules/like')
+,   Thread = require('./modules/thread')
 
-like.attachAllComments()
-like.attachAllThreads()
+Like.attachAllComments()
+Like.attachAllThreads()

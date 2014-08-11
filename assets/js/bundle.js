@@ -1,10 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/main.js":[function(require,module,exports){
 var request = require('superagent')
-,   like = require('./modules/like')
+,   Like = require('./modules/like')
+,   Thread = require('./modules/thread')
 
-like.attachAllComments()
-like.attachAllThreads()
-},{"./modules/like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js":[function(require,module,exports){
+Like.attachAllComments()
+Like.attachAllThreads()
+},{"./modules/like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","./modules/thread":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/thread.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js":[function(require,module,exports){
 var request = require('superagent')
 ,   utils = require('./utils')
 
@@ -51,7 +52,24 @@ function attachAllThreads(){
 
 module.exports.attachAllThreads = attachAllThreads
 module.exports.attachAllComments = attachAllComments
-},{"./utils":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js":[function(require,module,exports){
+},{"./utils":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/thread.js":[function(require,module,exports){
+var request = require('superagent')
+
+function threadGet(num){
+
+	var url = '/api/u/testaccount/thread/query?offset=' + num + '&limit=' + (num+10)
+
+	request
+	.get(url)
+	.end(function(err, res){
+		if(err) console.log(err)
+		var parsed = JSON.parse(res.text)
+		console.log(parsed)
+	})
+}
+
+module.exports.get = threadGet
+},{"superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js":[function(require,module,exports){
 function onClick(query, cb){
 	var elem = document.querySelectorAll(query);
 	for(var i=0; i<elem.length; i++){
