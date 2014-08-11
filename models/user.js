@@ -44,7 +44,7 @@ function addFriend_API(req, res, next){
         res.json({'status' : 'success', 'message' : 'You have accepted a friend request'})
     }
 
-    else if(req.USER.friends.indexOf(req.user.username) !== -1){
+    else if(req.user.friends.indexOf(req.USER.username) !== -1){
         res.json({'status' : 'error', 'message' : 'You have already added this user.'})
     }
 

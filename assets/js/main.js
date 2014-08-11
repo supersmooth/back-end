@@ -10,7 +10,7 @@ var http = require('http')
 function getLikes(e) {
 	var targ = e.target
 
-	if(targ.className === 'like') {
+	if(targ.data === 'like') {
 		button = targ
 		id = targ.id
 		parent = button.parentNode.children
