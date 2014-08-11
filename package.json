@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon",
+    "beef": "beefy assets/js/main.js:assets/js/bundle.js --live --open",
+    "build": "browserify -e assets/js/main.js --dg=false > assets/js/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -30,12 +33,15 @@
     "mongoose": "^3.8.14",
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
-    "validator": "^3.16.1"
+    "validator": "^3.16.1",
+    "superagent": "^0.18.2"
   },
   "devDependencies": {
     "morgan": "^1.2.2",
     "nodemon": "^1.2.1",
     "should": "^4.0.4",
-    "supertest": "^0.13.0"
+    "supertest": "^0.13.0",
+    "browserify": "^3.33.0",
+    "beefy": "^1.1.0"
   }
 }
