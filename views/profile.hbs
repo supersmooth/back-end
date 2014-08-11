@@ -41,7 +41,9 @@
         <span class='error hidden'>You've already liked this!</span>
         
         {{!-- like this thread --}}
-        <button id="{{this._id}}" class="like">like</button>
+        <button id="{{this._id}}" class="btn btn-primary" data-like-thread="" >
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+        </button>
         
         <br>
         <br>
@@ -55,7 +57,9 @@
                 [{{this.likes.length}} like]
 
                 {{!-- like this comment --}}
-                <button id="{{this._id}}" class="comment_like">like</button>
+                <button id="{{this._id}}_{{../this._id}}" class="btn btn-primary" data-like-comment="">
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                </button>
 
             </p>
         {{/each}}  

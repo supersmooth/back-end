@@ -1,58 +1,37 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/main.js":[function(require,module,exports){
-var superagent = require('superagent')
-, row = document.getElementsByClassName('row')[0]
-, error
-, button
-, id 
-, parent
-, likeSpan
-, counter
+var request = require('superagent')
 
-function getLikes(e) {
-	var targ = e.target
+function likeThread(e){
 
-
-	if(targ.data === 'like') {
-		button = targ
-		id = targ.id
-		parent = button.parentNode.children
-		likeSpan = parent[1]
-		error = parent[2]
-		request(button, id)
-	}
-
+	request
+	.post('/api/thread/' + e.target.id + '/like')
+	.end(function(err, res){
+		if(err) console.log(err)
+		console.log(res)
+	})
 }
 
-function request (ele, id) {
-	var route = '/api/thread/' + id + '/like'
-	, req = http.request({
-		method: 'POST',
-	 	path: route
-	 }, likes)
+function likeComment(e){
 
-	function likes (res) {
-		var data = ''
-		res.on('data', function (buf) {
-			data += buf
-		})
-		res.on('end', function () {
-			data = JSON.parse(data)
-			if(data.status === 'success')	{
-				counter = likeSpan.innerHTML.split('')
-				counter[1] = Number(counter[1]) + 1
-				likeSpan.innerHTML = counter.join('')
-			}
-			else 
-				error.className = error.className.replace('hidden', '')
+	var _id = e.target.id.split('_')
 
-		})
-	}
-
-	req.end()
+	request
+	.post('/api/thread/' + _id[0] + '/comment/' + _id[1] + '/like')
+	.end(function(err, res){
+		if(err) console.log(err)
+		console.log(res)
+	})
 }
 
-if(row)
-	row.addEventListener('click', getLikes)
+function onClick(query, cb){
+	elem = document.querySelectorAll(query);
+	for(var i=0; i<elem.length; i++){
+		elem[i].addEventListener('click', cb)
+	}
+}
+
+onClick('[data-like-thread]', likeThread)
+onClick('[data-like-comment]', likeComment)
 },{"superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js":[function(require,module,exports){
 /**
  * Module dependencies.

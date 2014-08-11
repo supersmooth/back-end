@@ -1,54 +1,33 @@
-var superagent = require('superagent')
-, row = document.getElementsByClassName('row')[0]
-, error
-, button
-, id 
-, parent
-, likeSpan
-, counter
+var request = require('superagent')
 
-function getLikes(e) {
-	var targ = e.target
+function likeThread(e){
 
-
-	if(targ.data === 'like') {
-		button = targ
-		id = targ.id
-		parent = button.parentNode.children
-		likeSpan = parent[1]
-		error = parent[2]
-		request(button, id)
-	}
-
+	request
+	.post('/api/thread/' + e.target.id + '/like')
+	.end(function(err, res){
+		if(err) console.log(err)
+		console.log(res)
+	})
 }
 
-function request (ele, id) {
-	var route = '/api/thread/' + id + '/like'
-	, req = http.request({
-		method: 'POST',
-	 	path: route
-	 }, likes)
+function likeComment(e){
 
-	function likes (res) {
-		var data = ''
-		res.on('data', function (buf) {
-			data += buf
-		})
-		res.on('end', function () {
-			data = JSON.parse(data)
-			if(data.status === 'success')	{
-				counter = likeSpan.innerHTML.split('')
-				counter[1] = Number(counter[1]) + 1
-				likeSpan.innerHTML = counter.join('')
-			}
-			else 
-				error.className = error.className.replace('hidden', '')
+	var _id = e.target.id.split('_')
 
-		})
-	}
-
-	req.end()
+	request
+	.post('/api/thread/' + _id[0] + '/comment/' + _id[1] + '/like')
+	.end(function(err, res){
+		if(err) console.log(err)
+		console.log(res)
+	})
 }
 
-if(row)
-	row.addEventListener('click', getLikes)
+function onClick(query, cb){
+	elem = document.querySelectorAll(query);
+	for(var i=0; i<elem.length; i++){
+		elem[i].addEventListener('click', cb)
+	}
+}
+
+onClick('[data-like-thread]', likeThread)
+onClick('[data-like-comment]', likeComment)

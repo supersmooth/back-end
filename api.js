@@ -24,7 +24,7 @@ module.exports = function(app){
     app.post('/api/thread/:thread/comment', Thread.findById_API, Comment.create_API)
 
     // 'like comment'
-    app.post('/api/thread/:thread/comment/:comment', authUtils.isLoggedIn_API, Thread.findById_API, Thread.findComment_API, Comment.like_API)
+    app.post('/api/thread/:thread/comment/:comment/like', authUtils.isLoggedIn_API, Thread.findById_API, Thread.findComment_API, Comment.like_API)
 
     // send friend request/accept friend request
     // should probably save user reference instead of username
