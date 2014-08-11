@@ -13,7 +13,12 @@ module.exports = function(app){
     app.post('/api/thread', authUtils.isLoggedIn_API, Thread.create_API)
 
     //users threads query
-    app.get('/api/u/:username/thread', User.getThreads_API)
+    //example: localhost:5000/api/u/testaccount/thread?offset=1&limit=4
+    app.get('/api/u/:username/thread/query', User.getThreads_API)
+
+    // thread comment query
+    //example: localhost:5000/api/thread/53e820480d33abc618fe6f0e/query?offset=2&limit=4
+    app.get('/api/thread/:thread/query', Thread.findById_API, Thread.getComments_API)
 
     // create comment
     app.post('/api/thread/:thread/comment', Thread.findById_API, Comment.create_API)

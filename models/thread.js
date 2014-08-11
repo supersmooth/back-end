@@ -113,6 +113,22 @@ function findComment_API(req, res, next){
     res.json({'status' : 'error', 'message' : 'Comment does not exist.'})
 }
 
+function getComments_API(req, res, next){
+
+    if(req.query.limit > 20){
+        res.json({'status' : 'error', 'message' : 'max limit = 20'})
+    }
+
+    else if(!req.query.limit || !req.query.offset){
+        res.json({'status' : 'error', 'message' : 'invalid query'})
+    }
+
+    else{
+        res.json(req.THREAD.comments.slice(req.query.offse, req.query.limit))
+    }
+
+}
+
 // exports
 module.exports.model = threadModel
 module.exports.create = createThread
@@ -121,3 +137,4 @@ module.exports.like_API = likeThread_API
 module.exports.create_API = createThread_API
 module.exports.findById_API = findById_API
 module.exports.findComment_API = findComment_API
+module.exports.getComments_API = getComments_API
