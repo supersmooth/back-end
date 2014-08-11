@@ -13,7 +13,7 @@ function addFriend(e){
 		if(err) console.log(err)
 		var parsed = JSON.parse(res.text)
 		if(parsed['status'] === 'error'){
-			utils.errorMessage(parsed['message'])
+			utils.warningMessage(parsed['message'])
 		}
 	})
 }

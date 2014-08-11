@@ -24,7 +24,7 @@ function addFriend(e){
 		if(err) console.log(err)
 		var parsed = JSON.parse(res.text)
 		if(parsed['status'] === 'error'){
-			utils.errorMessage(parsed['message'])
+			utils.warningMessage(parsed['message'])
 		}
 	})
 }
@@ -63,7 +63,7 @@ function postLike(elem, url){
 		if(parsed['status'] === "error") {
 			elem.className = elem.className.replace(' disabled', '')
 			elem.innerHTML = Number(elem.innerHTML ) - 1
-			utils.errorMessage(parsed['message'])
+			utils.warningMessage(parsed['message'])
 		}
 	})
 
@@ -108,12 +108,18 @@ function onClick(query, cb){
 }
 
 function errorMessage(msg){
-	var msg = "<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>Opps...</strong>" + msg + "</div>"
+	var msg = "<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>error </strong>" + msg + "</div>"
+	document.getElementById('message').innerHTML += msg
+}
+
+function warningMessage(msg){
+	var msg = "<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>Opps... </strong>" + msg + "</div>"
 	document.getElementById('message').innerHTML += msg
 }
 
 module.exports.onClick = onClick
 module.exports.errorMessage = errorMessage
+module.exports.warningMessage = warningMessage
 },{}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js":[function(require,module,exports){
 /**
  * Module dependencies.

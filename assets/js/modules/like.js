@@ -26,7 +26,7 @@ function postLike(elem, url){
 		if(parsed['status'] === "error") {
 			elem.className = elem.className.replace(' disabled', '')
 			elem.innerHTML = Number(elem.innerHTML ) - 1
-			utils.errorMessage(parsed['message'])
+			utils.warningMessage(parsed['message'])
 		}
 	})
 
