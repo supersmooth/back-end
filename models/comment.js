@@ -67,11 +67,17 @@ function createComment_API(req, res){
     })
 }
 
-function findById_API(req, res, next){
-}
+function like_API(req, res){
 
-function likeComment_API(req, res, next){
-    //todo
+    if(req.COMMENT.likes.indexOf(req.user.username) !== -1){
+        return res.json({'status' : 'error', 'message' : 'You have already liked that Comment.'})
+    }
+
+    req.COMMENT.likes.push(req.user.username)
+    req.THREAD.save(function(err){
+        if(err) console.log(err)
+        return res.json({'status': 'success'})
+    })
 }
 
 // exports
@@ -79,6 +85,5 @@ module.exports.model = commentModel
 module.exports.schema = commentSchema
 module.exports.create = createComment
 
-module.exports.findById_API = findById_API
-module.exports.like_API = likeComment_API
+module.exports.like_API = like_API
 module.exports.create_API = createComment_API

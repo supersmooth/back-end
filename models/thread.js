@@ -100,6 +100,19 @@ function likeThread_API(req, res, next){
     }
 }
 
+function findComment_API(req, res, next){
+
+    var comments = req.THREAD.comments
+
+    for(var i=0; i<comments.length; i++){
+        if(comments[i]['_id'] == req.params.comment){
+            req.COMMENT = comments[i]
+            return next()
+        }
+    }
+    res.json({'status' : 'error', 'message' : 'Comment does not exist.'})
+}
+
 // exports
 module.exports.model = threadModel
 module.exports.create = createThread
@@ -107,3 +120,4 @@ module.exports.findById = findById
 module.exports.like_API = likeThread_API
 module.exports.create_API = createThread_API
 module.exports.findById_API = findById_API
+module.exports.findComment_API = findComment_API

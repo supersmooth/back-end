@@ -53,7 +53,10 @@
                 <br>
                 by: <a href="/u/{{this.author}}">{{this.author}}</a>
                 [{{this.likes.length}} like]
-                <p class="_id">{{this._id}}</p>
+
+                {{!-- like this comment --}}
+                <button id="{{this._id}}" class="comment_like">like</button>
+
             </p>
         {{/each}}  
         {{!-- for each comment in thread --}}
