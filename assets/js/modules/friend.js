@@ -12,9 +12,14 @@ function addFriend(e){
 	.end(function(err, res){
 		if(err) console.log(err)
 		var parsed = JSON.parse(res.text)
+
+		elem.className += ' disabled'
+
 		if(parsed['status'] === 'error'){
+			elem.className = elem.className.replace(' disabled', '')
 			utils.warningMessage(parsed['message'])
 		}
+		
 	})
 }
 
