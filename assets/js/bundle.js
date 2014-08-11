@@ -1,5 +1,12 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/main.js":[function(require,module,exports){
 var request = require('superagent')
+,   like = require('./modules/like')
+
+like.attachAllComments()
+like.attachAllThreads()
+},{"./modules/like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js":[function(require,module,exports){
+var request = require('superagent')
+,   utils = require('./utils')
 
 function likeThread(e){
 
@@ -8,9 +15,8 @@ function likeThread(e){
 
 	postLike(elem, url)
 }
-
 function likeComment(e){
-	
+
 	var elem = e.target
 	var _id = elem.id.split('_')
 	var url = '/api/thread/' + _id[1] + '/comment/' + _id[0] + '/like'
@@ -27,7 +33,7 @@ function postLike(elem, url){
 		if(parsed['status'] === "error") {
 			elem.className = elem.className.replace(' disabled', '')
 			elem.innerHTML = Number(elem.innerHTML ) - 1
-			errorMessage(parsed['message'])
+			utils.errorMessage(parsed['message'])
 		}
 	})
 
@@ -35,21 +41,32 @@ function postLike(elem, url){
 	elem.className += ' disabled'
 }
 
+function attachAllComments(){
+	utils.onClick('[data-like-comment]', likeComment)
+}
+
+function attachAllThreads(){
+	utils.onClick('[data-like-thread]', likeThread)
+}
+
+module.exports.attachAllThreads = attachAllThreads
+module.exports.attachAllComments = attachAllComments
+},{"./utils":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js":[function(require,module,exports){
 function onClick(query, cb){
-	elem = document.querySelectorAll(query);
+	var elem = document.querySelectorAll(query);
 	for(var i=0; i<elem.length; i++){
 		elem[i].addEventListener('click', cb)
 	}
 }
 
-onClick('[data-like-thread]', likeThread)
-onClick('[data-like-comment]', likeComment)
-
 function errorMessage(msg){
 	var msg = "<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>Opps...</strong>" + msg + "</div>"
 	document.getElementById('message').innerHTML += msg
 }
-},{"superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js":[function(require,module,exports){
+
+module.exports.onClick = onClick
+module.exports.errorMessage = errorMessage
+},{}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js":[function(require,module,exports){
 /**
  * Module dependencies.
  */
