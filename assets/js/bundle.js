@@ -2,10 +2,39 @@
 var request = require('superagent')
 ,   Like = require('./modules/like')
 ,   Thread = require('./modules/thread')
+,   Friend = require('./modules/friend')
+
+Friend.attachHandler()
 
 Like.attachAllComments()
 Like.attachAllThreads()
-},{"./modules/like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","./modules/thread":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/thread.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js":[function(require,module,exports){
+},{"./modules/friend":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js","./modules/like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","./modules/thread":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/thread.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js":[function(require,module,exports){
+request = require('superagent')
+,   utils = require('./utils')
+
+function addFriend(e){
+
+	var elem = e.target
+	var username = elem.innerText.split(' ')[1]
+	var url = '/api/u/' + username + '/add'
+
+	request
+	.post(url)
+	.end(function(err, res){
+		if(err) console.log(err)
+		var parsed = JSON.parse(res.text)
+		if(parsed['status'] === 'error'){
+			utils.errorMessage(parsed['message'])
+		}
+	})
+}
+
+function attachHandler(){
+	utils.onClick('[data-add-friend]', addFriend)
+}
+
+module.exports.attachHandler = attachHandler
+},{"./utils":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js":[function(require,module,exports){
 var request = require('superagent')
 ,   utils = require('./utils')
 
@@ -69,6 +98,7 @@ function threadGet(num){
 }
 
 module.exports.get = threadGet
+
 },{"superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js":[function(require,module,exports){
 function onClick(query, cb){
 	var elem = document.querySelectorAll(query);
