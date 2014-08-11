@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "nodemon",
-    "beef": "beefy assets/js/main.js:assets/js/bundle.js --live --open",
-    "build": "browserify -e assets/js/main.js --dg=false > assets/js/bundle.js"
+    "watch": "watchify assets/js/main.js -v -o assets/js/bundle.js",
+    "build": "browserify -e assets/js/main.js > assets/js/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -37,11 +37,11 @@
     "superagent": "^0.18.2"
   },
   "devDependencies": {
+    "browserify": "^3.33.0",
     "morgan": "^1.2.2",
     "nodemon": "^1.2.1",
     "should": "^4.0.4",
     "supertest": "^0.13.0",
-    "browserify": "^3.33.0",
-    "beefy": "^1.1.0"
+    "watchify": "^1.0.1"
   }
 }

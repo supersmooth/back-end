@@ -1,5 +1,5 @@
-//var http = require('http')
-var  row = document.getElementsByClassName('row')[0]
+var superagent = require('superagent')
+, row = document.getElementsByClassName('row')[0]
 , error
 , button
 , id 
@@ -9,6 +9,7 @@ var  row = document.getElementsByClassName('row')[0]
 
 function getLikes(e) {
 	var targ = e.target
+
 
 	if(targ.data === 'like') {
 		button = targ
