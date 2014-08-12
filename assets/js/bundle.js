@@ -3,12 +3,42 @@ var request = require('superagent')
 ,   Like = require('./modules/like')
 ,   Thread = require('./modules/thread')
 ,   Friend = require('./modules/friend')
+,   Comment = require('./modules/comment')
 
 Friend.attachHandler()
 
+Comment.attachHandler()
+
 Like.attachAllComments()
 Like.attachAllThreads()
-},{"./modules/friend":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js","./modules/like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","./modules/thread":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/thread.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js":[function(require,module,exports){
+},{"./modules/comment":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/comment.js","./modules/friend":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js","./modules/like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","./modules/thread":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/thread.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/comment.js":[function(require,module,exports){
+var request = require('superagent')
+,   utils = require('./utils')
+
+function commentGet(url){
+	request
+	.get(url)
+	.end(function(err, res){
+		if(err) console.log(err)
+		var parsed = JSON.parse(res.text)
+		console.log(parsed)
+	})
+}
+
+function handleClick(e){
+	var elem = e.target
+	var url = '/api/thread/' + elem.id + '/query?offset=' + 0 + '&limit=' + 10 // todo
+
+	commentGet(url)
+}
+
+function attachHandler(){
+	utils.onClick('[data-load-comments]', handleClick)
+}
+
+module.exports.get = commentGet
+module.exports.attachHandler = attachHandler
+},{"./utils":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js":[function(require,module,exports){
 request = require('superagent')
 ,   utils = require('./utils')
 
