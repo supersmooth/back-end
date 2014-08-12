@@ -28,7 +28,7 @@ module.exports = function(app, passport){
 
     // user page
     app.get('/u/:username', User.findByUsername, function(req, res){
-
+        console.log(req.USER.threads)
         if((req.user) && (req.user.username === req.USER.username)){
             res.render('profile', {data: {isOwner: true, owner: req.USER.username,
                 friends: req.USER.friends,
@@ -72,7 +72,9 @@ module.exports = function(app, passport){
     // handles thread creation
     app.post('/thread', authUtils.isLoggedIn, Thread.create, function (req, res){
         console.log(req.THREAD)
-        res.redirect('/thread/' + req.THREAD._id)
+        backURL=req.header('Referer') || '/'
+        res.redirect(backURL)
+        //res.redirect('/thread/' + req.THREAD._id)
     })
 
     // handles comment creation

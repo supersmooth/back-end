@@ -22,8 +22,9 @@
         {{!-- for each comment in thread --}}
         {{#each this.comments}}
             <p class="nested">
-                {{this.body}}
-                <br>
+
+                <p>{{this.body}}</p>
+
                 by: <a href="/u/{{this.author}}">{{this.author}}</a>
 
                 {{!-- like this comment --}}

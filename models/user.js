@@ -64,9 +64,10 @@ function addFriend_API(req, res, next){
 function findByUsername(req, res, next){
     userModel
     .findOne({ 'username': req.params.username })
-    .populate('threads')
-    .skip(0)
-    .limit(10)
+    .populate({
+        path: 'threads',
+        //options:{limit: 10} //todo
+    })
     .exec(function(err, user) {
         if(err) console.log(err)
         if(user){

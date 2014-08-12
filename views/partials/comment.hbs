@@ -1,0 +1,15 @@
+{{!--         {{!-- for each comment in thread --}}
+        {{#each this.comments}}
+            <div class="comment">
+
+                <a href="/u/{{this.author}}">{{this.author}}:</a>
+                <p>{{this.body}}</p>
+
+                {{!-- like this comment --}}
+                <button id="{{this._id}}_{{../this._id}}" class="btn btn-primary" data-like-comment="">
+                    likes {{this.likes.length}}
+                </button>
+
+            </div>
+        {{/each}} 
+        {{!-- for each comment in thread --}} --}}
