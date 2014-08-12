@@ -1,38 +1,44 @@
 <h2>{{data.flash}}</h2>
 
-<div class="col-lg-12">
-
-    {{data.thread.body}}
-    
-    <br>
-
-    <span>[{{data.thread.likes.length}} like(s)]</span>
-    <span class='error hidden'>You've already liked this!</span>
-        
-    {{!-- like this thread --}}
-    <button id="{{data.thread._id}}" class="like">like</button>
-        
-    <br>
-    <br>
-
-    {{!-- for each comment in thread --}}
-    {{#each data.thread.comments}}
-        <p class="nested">
-            {{this.body}}
-            <br>
-            by: <a href="/u/{{this.author}}">{{this.author}}</a>
-            [{{this.likes.length}} like]
-            <p class="_id">{{this._id}}</p>
-        </p>
-    {{/each}}  
-    {{!-- for each comment in thread --}}
-
-    {{!-- new thread comment --}}
-    <form action="/thread/{{data.thread._id}}" method="post">
+    <div class="col-lg-12">
+        {{thread.body}}
         <br>
-        <input name="body" cols="30" rows="1" placeholder="Enter Comment..."></textarea>
-        <button type="submit">submit comment</button>
-    </form>
+        <br>
+        {{!-- like this thread --}}
+        <button id="{{thread._id}}" class="btn btn-primary" data-like-thread="" >
+            likes {{thread.likes.length}}
+        </button>
 
-</div>
+        <div class="input-group col-lg-6">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="{{thread._id}}" data-new-comment="">post comment</button>
+            </span> 
+            <input type="text" class="form-control" id="{{thread._id}}_input">
+        </div>
+
+        <br>
+        <br>
+
+        {{!-- for each comment in thread --}}
+        {{#each this.comments}}
+            <p class="nested">
+                {{this.body}}
+                <br>
+                by: <a href="/u/{{this.author}}">{{this.author}}</a>
+
+                {{!-- like this comment --}}
+                <button id="{{this._id}}_{{thread._id}}" class="btn btn-primary" data-like-comment="">
+                    likes {{this.likes.length}}
+                </button>
+
+            </p>
+        {{/each}} 
+        {{!-- for each comment in thread --}}
+
+        <a href="#" data-load-comments="" id="{{this._id}}"> load comments... </a>
+
+    </div>
+
+    <hr>
+
 

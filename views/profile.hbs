@@ -2,76 +2,76 @@
 <br>
 <div id="message"></div>
 
-<div class="col-lg-12">
-    <h1>{{data.owner}}'s Profile</h1>
+<div class="jumbotron profile">
+    <div class="col-lg-2 glyphicon glyphicon-user userpic"></div>
+    <div class="col-lg-10">
+        <h1>{{data.owner}}'s Profile</h1>
 
-    {{#unless data.isOwner}}
-    <button class="btn btn-primary" data-add-friend="" >add {{data.owner}}</button>
-    {{/unless}}
+        {{#unless data.isOwner}}
+        <button class="btn btn-primary" data-add-friend="" >add {{data.owner}}</button>
+        {{/unless}}
 
-    <h3> Friends: </h3>
+        <strong> Friends: </strong>
 
-    {{!-- for each friend --}}
-    {{#each data.friends}}
-    <a href="/u/{{this}}">{{this}}</a>
-    {{/each}}
-    {{!-- for each friend --}}
+        {{!-- for each friend --}}
+        {{#each data.friends}}
+        <a href="/u/{{this}}">{{this}}</a>
+        {{/each}}
+        {{!-- for each friend --}}
 
-    <h3> Posts:</h3>
+    </div>
 </div>
 
 {{#if data.isOwner}}
-    <div class="col-lg-12">
-        <form action="/thread" method="post">
-            <textarea name="content" cols="30" rows="3" placeholder="Enter Thread..." class="form-control"></textarea>
-            <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="col-lg-12 well well-lg">
+        <form action="/thread" method="post" class="input-group">
+            <input class="form-control" name="content" cols="30" rows="3" placeholder="Enter Thread..." class="form-control">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </span>
         </form>
     </div>
 {{/if}}
 
 <h2>{{data.flash}}</h2>
 
-<hr>
-
 {{!-- for each thread on profile --}}
 {{#each data.threads}}
 
-    <div class="col-lg-12">
-        {{this.body}}
-        <br>
-        <br>
-        {{!-- like this thread --}}
-        <button id="{{this._id}}" class="btn btn-primary" data-like-thread="" >
-            likes {{this.likes.length}}
-        </button>
+    <div class="col-lg-12 thread well">
 
-        <div class="input-group col-lg-6">
+        <p class="well">{{this.body}}</p>
+
+        <div class="input-group col-lg-12">
             <span class="input-group-btn">
+                {{!-- like this thread --}}
+                <button id="{{this._id}}" class="btn btn-primary" data-like-thread="" >
+                    likes {{this.likes.length}}
+                </button>
                 <button class="btn btn-default" type="button" id="{{this._id}}" data-new-comment="">post comment</button>
             </span> 
             <input type="text" class="form-control" id="{{this._id}}_input">
         </div>
 
-        <br>
-        <br>
+        <hr>
 
         {{!-- for each comment in thread --}}
         {{#each this.comments}}
-            <p class="nested">
-                {{this.body}}
-                <br>
-                by: <a href="/u/{{this.author}}">{{this.author}}</a>
+            <div class="comment">
+
+                <a href="/u/{{this.author}}">{{this.author}}:</a>
+                <p>{{this.body}}</p>
 
                 {{!-- like this comment --}}
                 <button id="{{this._id}}_{{../this._id}}" class="btn btn-primary" data-like-comment="">
                     likes {{this.likes.length}}
                 </button>
 
-            </p>
+            </div>
         {{/each}} 
         {{!-- for each comment in thread --}}
 
-        <a href="#" data-load-comments="" id="{{this._id}}"> load comments... </a>
+        <a href="#" data-load-comments="" id="{{this._id}}" class="loadComments"> load comments... </a>
 
     </div>
 
@@ -79,5 +79,3 @@
 
 {{/each}}
 {{!-- for each thread on profile --}}
-
-</div>
