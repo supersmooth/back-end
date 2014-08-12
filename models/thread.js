@@ -22,10 +22,9 @@ function createThread(req, res, next) {
         likes: [req.user.username],
         body: req.body.content
     })
-    console.log(newThread)
     newThread.save(function (err, thread){
         if (err) console.log(err)
-        req.user.threads.unshift(thread._id)
+        req.user.threads.push(thread._id)
         req.user.save(function (err) {
             if (err) console.log(err)
             req.THREAD = thread
@@ -47,7 +46,7 @@ function createThread_API(req, res){
 
     newThread.save(function (err, thread){
         if (err) console.log(err)
-        req.user.threads.unshift(thread._id)
+        req.user.threads.push(thread._id)
         req.user.save(function (err) {
             if (err) console.log(err)
         })

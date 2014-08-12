@@ -16,38 +16,6 @@ var commentSchema = mongoose.Schema({
 // Comment model
 var commentModel = mongoose.model('Comment', commentSchema)
 
-// refactor this refactor this refactor this
-// Comment create
-function createComment(req, res, next){
-    var newComment = new commentModel({
-        body: req.body.body,
-        author: req.user.username,
-        likes: [req.user.username],
-        date: Date.now(),
-    })
-    req.THREAD.comments.push(newComment)
-    req.THREAD.save(function (err, comment){
-        if(err) console.log(err)
-        //
-        User.model
-        .findOne({ 'username': comment.author})
-        .exec(function(err, user){
-            if(err) console.log(err)
-            if(user) {
-                user.comments.push(comment)
-                user.save(function(err){
-                    if(err) console.log(err)
-                    next()
-                })
-            }
-            else {
-                req.flash('message', 'Profile page does not exist')
-                res.redirect('/')
-            }
-        })
-    })
-}
-
 // create comment API
 // should save comment reference on creator?
 function createComment_API(req, res){
@@ -57,7 +25,7 @@ function createComment_API(req, res){
         likes: [req.user.username],
         date: Date.now(),
     })
-    req.THREAD.comments.push(newComment)
+    req.THREAD.comments.unshift(newComment)
     req.THREAD.save(function (err, comment){
         if(err){
             console.log(err)
@@ -83,7 +51,6 @@ function like_API(req, res){
 // exports
 module.exports.model = commentModel
 module.exports.schema = commentSchema
-module.exports.create = createComment
 
 module.exports.like_API = like_API
 module.exports.create_API = createComment_API

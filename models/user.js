@@ -66,7 +66,7 @@ function findByUsername(req, res, next){
     .findOne({ 'username': req.params.username })
     .populate({
         path: 'threads',
-        //options:{limit: 10} //todo
+        options:{skip: 0, limit: 5, sort: {'_id': -1}}
     })
     .exec(function(err, user) {
         if(err) console.log(err)
