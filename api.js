@@ -21,7 +21,7 @@ module.exports = function(app){
     app.get('/api/thread/:thread/query', Thread.findById_API, Thread.getComments_API)
 
     // create comment
-    app.post('/api/thread/:thread/comment', Thread.findById_API, Comment.create_API)
+    app.post('/api/thread/:thread/comment', authUtils.isLoggedIn_API, Thread.findById_API, Comment.create_API)
 
     // 'like comment'
     app.post('/api/thread/:thread/comment/:comment/like', authUtils.isLoggedIn_API, Thread.findById_API, Thread.findComment_API, Comment.like_API)

@@ -24,12 +24,12 @@ function postLike(elem, url){
 		if(err) console.log(err)
 		var parsed = JSON.parse(res.text)
 
-		elem.innerHTML = Number(elem.innerHTML ) + 1
+		elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) + 1)
 		elem.className += ' disabled'
 
 		if(parsed['status'] === "error") {
 			elem.className = elem.className.replace(' disabled', '')
-			elem.innerHTML = Number(elem.innerHTML ) - 1
+			elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) - 1)
 			utils.warningMessage(parsed['message'])
 		}
 	})
