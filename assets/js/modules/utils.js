@@ -17,6 +17,11 @@ function warningMessage(msg){
 	window.scrollTo(0,50)
 }
 
+function getUsername(){
+	return document.getElementById('META').innerHTML
+}
+
 module.exports.onClick = onClick
 module.exports.errorMessage = errorMessage
 module.exports.warningMessage = warningMessage
+module.exports.getUsername = getUsername

@@ -27,16 +27,18 @@ module.exports = function(app, passport){
     })
 
     // user page
-    app.get('/u/:username', User.findByUsername, function(req, res){
+    app.get('/u/:username', User.findByUsername, function(req, res){    
+
+        var u = req.user ? req.user.username : null
 
         if((req.user) && (req.user.username === req.USER.username)){
             res.render('profile', {data: {isOwner: true, owner: req.USER.username,
-                friends: req.USER.friends,
+                friends: req.USER.friends, user: u,
                 threads: req.USER.threads, flash: req.flash('message')}})
         }
         else if (req.USER){
             res.render('profile', {data: {isOwner: false, owner: req.USER.username,
-                friends: req.USER.friends,
+                friends: req.USER.friends, user: u,
                 threads: req.USER.threads, flash: req.flash('message')}})
         }
         else{

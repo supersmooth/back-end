@@ -36,7 +36,6 @@ function newComment(e){
 		if(err) console.log(err)
 		var parsed = JSON.parse(res.text)
 
-		
 		textContent.value = ''
 
 		if(parsed['status'] === 'error'){

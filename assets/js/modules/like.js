@@ -56,12 +56,12 @@ function unclicks(elem){
 
 function attachAllComments(){
 	utils.onClick('[data-like-comment]', likeComment)
-	checkIfClicked('[data-like-comment]', 'data-like-comment', 'derpderp')
+	checkIfClicked('[data-like-comment]', 'data-like-comment', utils.getUsername())
 }
 
 function attachAllThreads(){
 	utils.onClick('[data-like-thread]', likeThread)
-	checkIfClicked('[data-like-thread]', 'data-like-thread', 'derpderp')
+	checkIfClicked('[data-like-thread]', 'data-like-thread', utils.getUsername())
 }
 
 module.exports.attachAllThreads = attachAllThreads
