@@ -31,7 +31,7 @@ function createComment_API(req, res){
             console.log(err)
             res.json({'status' : 'error', 'message' : 'server error, try again'})
         }
-        else res.json({'status' : 'success', 'message' : 'Comment created.'})
+        else res.json({'status' : 'success', 'message' : newComment})
     })
 }
 

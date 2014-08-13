@@ -1,5 +1,6 @@
 var request = require('superagent')
 ,   utils = require('./utils')
+,   Like = require('./like')
 
 function commentGet(url){
 	request
@@ -35,12 +36,27 @@ function newComment(e){
 		if(err) console.log(err)
 		var parsed = JSON.parse(res.text)
 
+		
 		textContent.value = ''
 
 		if(parsed['status'] === 'error'){
 			utils.warningMessage(parsed['message'])
 		}
+		if(parsed['status'] === 'success'){
+			console.log(parsed['message'])
+			var msg = parsed['message']
+
+			commentTemplate(msg.author, msg.body, elem.id, msg._id, msg.likes)
+		}
 	})
+}
+
+//refactor
+function commentTemplate(author, body, threadID, commendID, likes){
+	var elem = document.createElement('div')
+	elem.innerHTML = "<div class=\"comment\"><a href=\"\/u\/" + author + "\">" + author + ":</a><p>" + body + "</p><button id=\"" + threadID + "_" + commendID + "\" class=\"btn btn-primary\" data-like-comment=\"\">likes " + likes.length + "</button></div>"
+	document.querySelector('[data-thread='+ '\"' + threadID + '\"' +']').appendChild(elem)
+	Like.attachAllComments()
 }
 
 module.exports.get = commentGet

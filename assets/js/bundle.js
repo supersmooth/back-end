@@ -14,6 +14,7 @@ Like.attachAllThreads()
 },{"./modules/comment":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/comment.js","./modules/friend":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js","./modules/like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","./modules/thread":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/thread.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/comment.js":[function(require,module,exports){
 var request = require('superagent')
 ,   utils = require('./utils')
+,   Like = require('./like')
 
 function commentGet(url){
 	request
@@ -49,18 +50,33 @@ function newComment(e){
 		if(err) console.log(err)
 		var parsed = JSON.parse(res.text)
 
+		
 		textContent.value = ''
 
 		if(parsed['status'] === 'error'){
 			utils.warningMessage(parsed['message'])
 		}
+		if(parsed['status'] === 'success'){
+			console.log(parsed['message'])
+			var msg = parsed['message']
+
+			commentTemplate(msg.author, msg.body, elem.id, msg._id, msg.likes)
+		}
 	})
+}
+
+//refactor
+function commentTemplate(author, body, threadID, commendID, likes){
+	var elem = document.createElement('div')
+	elem.innerHTML = "<div class=\"comment\"><a href=\"\/u\/" + author + "\">" + author + ":</a><p>" + body + "</p><button id=\"" + threadID + "_" + commendID + "\" class=\"btn btn-primary\" data-like-comment=\"\">likes " + likes.length + "</button></div>"
+	document.querySelector('[data-thread='+ '\"' + threadID + '\"' +']').appendChild(elem)
+	Like.attachAllComments()
 }
 
 module.exports.get = commentGet
 module.exports.attachHandler = attachHandler
-},{"./utils":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js":[function(require,module,exports){
-request = require('superagent')
+},{"./like":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/like.js","./utils":"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/utils.js","superagent":"/home/olivier/Documents/programing/web3/supersmooth/back-end/node_modules/superagent/lib/client.js"}],"/home/olivier/Documents/programing/web3/supersmooth/back-end/assets/js/modules/friend.js":[function(require,module,exports){
+var request = require('superagent')
 ,   utils = require('./utils')
 
 function addFriend(e){

@@ -1,4 +1,4 @@
-request = require('superagent')
+var request = require('superagent')
 ,   utils = require('./utils')
 
 function addFriend(e){
