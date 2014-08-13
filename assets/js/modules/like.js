@@ -20,6 +20,7 @@ function likeComment(e){
 function postLike(elem, url){
 
 	clicks(elem)
+	plusOne(elem)
 
 	request
 	.post(url)
@@ -30,6 +31,7 @@ function postLike(elem, url){
 		if(parsed['status'] === "error") {
 			utils.warningMessage(parsed['message'])
 			unclicks(elem)
+			minusOne(elem)
 		}
 	})
 }
@@ -45,13 +47,20 @@ function checkIfClicked(elem, attr, name){
 }
 
 function clicks(elem){
-	elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) + 1)
 	elem.className += ' disabled'
+}
+
+function plusOne(elem){
+	elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) + 1)
+}
+
+function minusOne(elem){
+	elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) - 1)
 }
 
 function unclicks(elem){
 	elem.className = elem.className.replace(' disabled', '')
-	elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) - 1)
+	
 }
 
 function attachAllComments(){
