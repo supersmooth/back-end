@@ -55,7 +55,8 @@ function newComment(e){
 function commentTemplate(author, body, threadID, commendID, likes){
 	var elem = document.createElement('div')
 	elem.innerHTML = "<div class=\"comment\"><a href=\"\/u\/" + author + "\">" + author + ":</a><p>" + body + "</p><button id=\"" + threadID + "_" + commendID + "\" class=\"btn btn-primary\" data-like-comment=\"\">likes " + likes.length + "</button></div>"
-	document.querySelector('[data-thread='+ '\"' + threadID + '\"' +']').appendChild(elem)
+	var parent = document.querySelector('[data-thread='+ '\"' + threadID + '\"' +']')
+	parent.insertBefore(elem, parent.firstChild)
 	Like.attachAllComments()
 }
 
