@@ -25,6 +25,13 @@ filenames.forEach(function (filename) {
   hbs.registerPartial(name, template);
 })
 
+hbs.registerHelper('helpers.js', function (args) {
+    console.log('asdasd')
+    args = args || {};
+    var template = hbs.compile(fs.readFileSync(__dirname + '/views/helpers' + file, 'utf8'));
+    return new hbs.handlebars.SafeString(template(args));
+});
+
 // db
 db.connect(function(err){
     if(err) return console.error("Couldn't connect to database!")
