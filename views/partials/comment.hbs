@@ -4,7 +4,7 @@
     <a href="/u/{{this.author}}">{{this.author}}:</a>
     <p>{{this.body}}</p>
     {{!-- like this comment --}}
-    <button id="{{this._id}}_{{../this._id}}" class="btn btn-primary" data-like-comment="">
+    <button id="{{this._id}}_{{../this._id}}" class="btn btn-primary" data-like-comment="{{this.likes}}">
     likes {{this.likes.length}}
     </button>
 </div>

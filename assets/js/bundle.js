@@ -128,29 +128,50 @@ function likeComment(e){
 }
 
 function postLike(elem, url){
+
+	clicks(elem)
+
 	request
 	.post(url)
 	.end(function(err, res){
 		if(err) console.log(err)
 		var parsed = JSON.parse(res.text)
 
-		elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) + 1)
-		elem.className += ' disabled'
-
 		if(parsed['status'] === "error") {
-			elem.className = elem.className.replace(' disabled', '')
-			elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) - 1)
 			utils.warningMessage(parsed['message'])
+			unclicks(elem)
 		}
 	})
 }
 
+function checkIfClicked(elem, attr, name){
+
+	var elem = document.querySelectorAll(elem)
+	for(var i=0; i<elem.length; i++){
+		if(elem[i].getAttribute(attr).indexOf(name) !== -1){
+			clicks(elem[i])
+		}
+	}
+}
+
+function clicks(elem){
+	elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) + 1)
+	elem.className += ' disabled'
+}
+
+function unclicks(elem){
+	elem.className = elem.className.replace(' disabled', '')
+	elem.innerText = 'likes ' + (Number(elem.innerText.split(' ')[1]) - 1)
+}
+
 function attachAllComments(){
 	utils.onClick('[data-like-comment]', likeComment)
+	checkIfClicked('[data-like-comment]', 'data-like-comment', 'derpderp')
 }
 
 function attachAllThreads(){
 	utils.onClick('[data-like-thread]', likeThread)
+	checkIfClicked('[data-like-thread]', 'data-like-thread', 'derpderp')
 }
 
 module.exports.attachAllThreads = attachAllThreads
